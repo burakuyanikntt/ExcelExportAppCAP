@@ -1,0 +1,38 @@
+{
+	"T_LAYOUT": {
+		"target": {
+			"object": "sap.plc.db::basis.t_layout",
+			"schema.configure": "ServiceName_1/schema"
+		}
+	},
+	"T_LAYOUT_COLUMN": {
+		"target": {
+			"object": "sap.plc.db::basis.t_layout_column",
+			"schema.configure": "ServiceName_1/schema"
+		}
+	},
+	"T_CALCULATION": {
+		"target": {
+			"object": "sap.plc.db::basis.t_calculation",
+			"schema.configure": "ServiceName_1/schema"
+		}
+	},
+	"T_ITEM_EXT": {
+		"target": {
+			"object": "sap.plc.db::basis.t_item_ext",
+			"schema.configure": "ServiceName_1/schema"
+		}
+	},
+	"T_CALCULATION_VERSION": {
+		"target": {
+			"object": "sap.plc.db::basis.t_calculation_version",
+			"schema.configure": "ServiceName_1/schema"
+		}
+},
+"T_ITEM": {
+		"target": {
+			"object": "sap.plc.db::basis.t_item",
+			"schema.configure": "ServiceName_1/schema"
+		}
+	}
+}

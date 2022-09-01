@@ -1,0 +1,843 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Capabilities.V1.xml">
+    <edmx:Include Alias="Capabilities" Namespace="Org.OData.Capabilities.V1"/>
+  </edmx:Reference>
+  <edmx:DataServices>
+    <Schema Namespace="ExcelExportSrv" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <EntityContainer Name="EntityContainer">
+        <EntitySet Name="calculation_versions" EntityType="ExcelExportSrv.calculation_versions"/>
+        <EntitySet Name="calculations" EntityType="ExcelExportSrv.calculations"/>
+        <EntitySet Name="item_cal_join" EntityType="ExcelExportSrv.item_cal_join"/>
+        <EntitySet Name="item_exts" EntityType="ExcelExportSrv.item_exts"/>
+        <EntitySet Name="items" EntityType="ExcelExportSrv.items"/>
+        <EntitySet Name="lay_join" EntityType="ExcelExportSrv.lay_join"/>
+        <EntitySet Name="layout_columns" EntityType="ExcelExportSrv.layout_columns"/>
+        <EntitySet Name="layouts" EntityType="ExcelExportSrv.layouts"/>
+        <EntitySet Name="t_layout_view" EntityType="ExcelExportSrv.t_layout_view"/>
+      </EntityContainer>
+      <EntityType Name="calculation_versions">
+        <Key>
+          <PropertyRef Name="CALCULATION_VERSION_ID"/>
+        </Key>
+        <Property Name="CALCULATION_VERSION_ID" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="CALCULATION_ID" Type="Edm.Int32"/>
+        <Property Name="CALCULATION_VERSION_NAME" Type="Edm.String" MaxLength="500"/>
+        <Property Name="STATUS_ID" Type="Edm.String" MaxLength="20"/>
+        <Property Name="CALCULATION_VERSION_TYPE" Type="Edm.Int32"/>
+        <Property Name="ROOT_ITEM_ID" Type="Edm.Int32"/>
+        <Property Name="CUSTOMER_ID" Type="Edm.String" MaxLength="10"/>
+        <Property Name="SALES_DOCUMENT" Type="Edm.String" MaxLength="100"/>
+        <Property Name="SALES_PRICE" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="SALES_PRICE_CURRENCY_ID" Type="Edm.String" MaxLength="3"/>
+        <Property Name="REPORT_CURRENCY_ID" Type="Edm.String" MaxLength="3"/>
+        <Property Name="COSTING_SHEET_ID" Type="Edm.String" MaxLength="15"/>
+        <Property Name="COMPONENT_SPLIT_ID" Type="Edm.String" MaxLength="35"/>
+        <Property Name="START_OF_PRODUCTION" Type="Edm.Date"/>
+        <Property Name="END_OF_PRODUCTION" Type="Edm.Date"/>
+        <Property Name="VALUATION_DATE" Type="Edm.Date"/>
+        <Property Name="LAST_MODIFIED_ON" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="LAST_MODIFIED_BY" Type="Edm.String" MaxLength="256"/>
+        <Property Name="MASTER_DATA_TIMESTAMP" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="LIFECYCLE_PERIOD_FROM" Type="Edm.Int32"/>
+        <Property Name="BASE_VERSION_ID" Type="Edm.Int32"/>
+        <Property Name="IS_FROZEN" Type="Edm.Int32"/>
+        <Property Name="VARIANT_ID" Type="Edm.Int32"/>
+        <Property Name="EXCHANGE_RATE_TYPE_ID" Type="Edm.String" MaxLength="20"/>
+        <Property Name="MATERIAL_PRICE_STRATEGY_ID" Type="Edm.String" MaxLength="20"/>
+        <Property Name="ACTIVITY_PRICE_STRATEGY_ID" Type="Edm.String" MaxLength="20"/>
+        <Property Name="SELECTED_TOTAL_COSTING_SHEET" Type="Edm.String" MaxLength="20"/>
+        <Property Name="SELECTED_TOTAL_COMPONENT_SPLIT" Type="Edm.String" MaxLength="20"/>
+      </EntityType>
+      <EntityType Name="calculations">
+        <Key>
+          <PropertyRef Name="CALCULATION_ID"/>
+        </Key>
+        <Property Name="CALCULATION_ID" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="PROJECT_ID" Type="Edm.String" MaxLength="35"/>
+        <Property Name="CALCULATION_NAME" Type="Edm.String" MaxLength="500"/>
+        <Property Name="CURRENT_CALCULATION_VERSION_ID" Type="Edm.Int32"/>
+        <Property Name="CREATED_ON" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="CREATED_BY" Type="Edm.String" MaxLength="256"/>
+        <Property Name="LAST_MODIFIED_ON" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="LAST_MODIFIED_BY" Type="Edm.String" MaxLength="256"/>
+      </EntityType>
+      <EntityType Name="item_cal_join">
+        <Property Name="ITEM_ID" Type="Edm.Int32"/>
+        <Property Name="CALCULATION_VERSION_ID" Type="Edm.Int32"/>
+        <Property Name="PARENT_ITEM_ID" Type="Edm.Int32"/>
+        <Property Name="PREDECESSOR_ITEM_ID" Type="Edm.Int32"/>
+        <Property Name="IS_ACTIVE" Type="Edm.Int32"/>
+        <Property Name="HIGHLIGHT_GREEN" Type="Edm.Int32"/>
+        <Property Name="HIGHLIGHT_ORANGE" Type="Edm.Int32"/>
+        <Property Name="HIGHLIGHT_YELLOW" Type="Edm.Int32"/>
+        <Property Name="ITEM_CATEGORY_ID" Type="Edm.Int32"/>
+        <Property Name="ITEM_DESCRIPTION" Type="Edm.String" MaxLength="250"/>
+        <Property Name="REFERENCED_CALCULATION_VERSION_ID" Type="Edm.Int32"/>
+        <Property Name="COMMENT" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="ACCOUNT_ID" Type="Edm.String" MaxLength="10"/>
+        <Property Name="DETERMINED_ACCOUNT_ID" Type="Edm.String" MaxLength="10"/>
+        <Property Name="DOCUMENT_TYPE_ID" Type="Edm.String" MaxLength="3"/>
+        <Property Name="DOCUMENT_ID" Type="Edm.String" MaxLength="40"/>
+        <Property Name="DOCUMENT_VERSION" Type="Edm.String" MaxLength="2"/>
+        <Property Name="DOCUMENT_PART" Type="Edm.String" MaxLength="3"/>
+        <Property Name="DOCUMENT_STATUS_ID" Type="Edm.String" MaxLength="2"/>
+        <Property Name="DESIGN_OFFICE_ID" Type="Edm.String" MaxLength="3"/>
+        <Property Name="MATERIAL_ID" Type="Edm.String" MaxLength="40"/>
+        <Property Name="MATERIAL_TYPE_ID" Type="Edm.String" MaxLength="4"/>
+        <Property Name="MATERIAL_GROUP_ID" Type="Edm.String" MaxLength="9"/>
+        <Property Name="IS_PHANTOM_MATERIAL" Type="Edm.Int32"/>
+        <Property Name="IS_CONFIGURABLE_MATERIAL" Type="Edm.Int32"/>
+        <Property Name="MATERIAL_SOURCE" Type="Edm.Int32"/>
+        <Property Name="OVERHEAD_GROUP_ID" Type="Edm.String" MaxLength="10"/>
+        <Property Name="VALUATION_CLASS_ID" Type="Edm.String" MaxLength="4"/>
+        <Property Name="PURCHASING_GROUP" Type="Edm.String" MaxLength="20"/>
+        <Property Name="PURCHASING_DOCUMENT" Type="Edm.String" MaxLength="10"/>
+        <Property Name="LOCAL_CONTENT" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="ACTIVITY_TYPE_ID" Type="Edm.String" MaxLength="12"/>
+        <Property Name="PROCESS_ID" Type="Edm.String" MaxLength="12"/>
+        <Property Name="LOT_SIZE" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="LOT_SIZE_CALCULATED" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="LOT_SIZE_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="ENGINEERING_CHANGE_NUMBER_ID" Type="Edm.String" MaxLength="250"/>
+        <Property Name="COMPANY_CODE_ID" Type="Edm.String" MaxLength="4"/>
+        <Property Name="COST_CENTER_ID" Type="Edm.String" MaxLength="10"/>
+        <Property Name="PLANT_ID" Type="Edm.String" MaxLength="8"/>
+        <Property Name="WORK_CENTER_ID" Type="Edm.String" MaxLength="15"/>
+        <Property Name="WORK_CENTER_CATEGORY" Type="Edm.String" MaxLength="50"/>
+        <Property Name="EFFICIENCY" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="BUSINESS_AREA_ID" Type="Edm.String" MaxLength="15"/>
+        <Property Name="PROFIT_CENTER_ID" Type="Edm.String" MaxLength="10"/>
+        <Property Name="QUANTITY" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="QUANTITY_CALCULATED" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="QUANTITY_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="QUANTITY_UOM_ID" Type="Edm.String" MaxLength="3"/>
+        <Property Name="TOTAL_QUANTITY" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="TOTAL_QUANTITY_UOM_ID" Type="Edm.String" MaxLength="3"/>
+        <Property Name="TOTAL_QUANTITY_DEPENDS_ON" Type="Edm.Int32"/>
+        <Property Name="TOTAL_QUANTITY_OF_VARIANTS" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="IS_RELEVANT_TO_COSTING_IN_ERP" Type="Edm.Int32"/>
+        <Property Name="BASE_QUANTITY" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="BASE_QUANTITY_CALCULATED" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="BASE_QUANTITY_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="QUANTITY_PER_BASE_UNIT" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="QUANTITY_PER_BASE_UNIT_UOM_ID" Type="Edm.String"/>
+        <Property Name="PRICE_FIXED_PORTION" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="PRICE_FIXED_PORTION_CALCULATED" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="PRICE_FIXED_PORTION_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="PRICE_VARIABLE_PORTION" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="PRICE_VARIABLE_PORTION_CALCULATED" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="PRICE_VARIABLE_PORTION_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="PRICE" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="TRANSACTION_CURRENCY_ID" Type="Edm.String" MaxLength="3"/>
+        <Property Name="PRICE_UNIT" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="PRICE_UNIT_CALCULATED" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="PRICE_UNIT_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="PRICE_UNIT_UOM_ID" Type="Edm.String" MaxLength="3"/>
+        <Property Name="IS_PRICE_SPLIT_ACTIVE" Type="Edm.Int32"/>
+        <Property Name="IS_DISABLING_ACCOUNT_DETERMINATION" Type="Edm.Int32"/>
+        <Property Name="PRICE_ID" Type="Edm.String" MaxLength="32"/>
+        <Property Name="CONFIDENCE_LEVEL_ID" Type="Edm.Int32"/>
+        <Property Name="PRICE_SOURCE_ID" Type="Edm.String" MaxLength="20"/>
+        <Property Name="PRICE_SOURCE_TYPE_ID" Type="Edm.Int32"/>
+        <Property Name="SURCHARGE" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="IS_DISABLING_PRICE_DETERMINATION" Type="Edm.Int32"/>
+        <Property Name="VENDOR_ID" Type="Edm.String" MaxLength="10"/>
+        <Property Name="TARGET_COST" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="TARGET_COST_CALCULATED" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="TARGET_COST_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="TARGET_COST_CURRENCY_ID" Type="Edm.String"/>
+        <Property Name="CREATED_ON" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="CREATED_BY" Type="Edm.String" MaxLength="256"/>
+        <Property Name="LAST_MODIFIED_ON" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="LAST_MODIFIED_BY" Type="Edm.String" MaxLength="256"/>
+        <Property Name="PRICE_FOR_TOTAL_QUANTITY" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="PRICE_FOR_TOTAL_QUANTITY_FIXED_PORTION" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="PRICE_FOR_TOTAL_QUANTITY_VARIABLE_PORTION" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="PRICE_FOR_TOTAL_QUANTITY2" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="PRICE_FOR_TOTAL_QUANTITY2_FIXED_PORTION" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="PRICE_FOR_TOTAL_QUANTITY2_VARIABLE_PORTION" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="PRICE_FOR_TOTAL_QUANTITY3" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="PRICE_FOR_TOTAL_QUANTITY3_FIXED_PORTION" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="PRICE_FOR_TOTAL_QUANTITY3_VARIABLE_PORTION" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="OTHER_COST" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="OTHER_COST_FIXED_PORTION" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="OTHER_COST_VARIABLE_PORTION" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="TOTAL_COST" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="TOTAL_COST_FIXED_PORTION" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="TOTAL_COST_VARIABLE_PORTION" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="TOTAL_COST_PER_UNIT" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="TOTAL_COST_PER_UNIT_FIXED_PORTION" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="TOTAL_COST_PER_UNIT_VARIABLE_PORTION" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="TOTAL_COST2" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="TOTAL_COST2_FIXED_PORTION" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="TOTAL_COST2_VARIABLE_PORTION" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="TOTAL_COST2_PER_UNIT" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="TOTAL_COST2_PER_UNIT_FIXED_PORTION" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="TOTAL_COST2_PER_UNIT_VARIABLE_PORTION" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="TOTAL_COST3" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="TOTAL_COST3_FIXED_PORTION" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="TOTAL_COST3_VARIABLE_PORTION" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="TOTAL_COST3_PER_UNIT" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="TOTAL_COST3_PER_UNIT_FIXED_PORTION" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="TOTAL_COST3_PER_UNIT_VARIABLE_PORTION" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="BOM_COMPARE_KEY" Type="Edm.String" MaxLength="256"/>
+        <Property Name="CUST_ACTIVITY_COST_MANUAL" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_ACTIVITY_COST_CALCULATED" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_ACTIVITY_COST_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_ACTIVITY_COST_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_COLLREQ_COST_MANUAL" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_COLLREQ_COST_CALCULATED" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_COLLREQ_COST_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_COLLREQ_COST_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_COLLREQ_COST_RATE_MANUAL" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_COLLREQ_COST_RATE_CALCULATED" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_COLLREQ_COST_RATE_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_COLLREQ_COST_RATE_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_MATERIAL_COST_MANUAL" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_MATERIAL_COST_CALCULATED" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_MATERIAL_COST_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_MATERIAL_COST_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_ACTIVITY_COST_RATE_MANUAL" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_ACTIVITY_COST_RATE_CALCULATED" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_ACTIVITY_COST_RATE_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_ACTIVITY_COST_RATE_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_MATERIAL_COST_RATE_MANUAL" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_MATERIAL_COST_RATE_CALCULATED" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_MATERIAL_COST_RATE_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_MATERIAL_COST_RATE_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_CALCULATION_RESPONSIBLE_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_CALCULATION_RESPONSIBLE_CALCULATED" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_CALCULATION_RESPONSIBLE_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_CALCULATION_RESPONSIBLE_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_CATALOGUE_ID_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_CATALOGUE_ID_CALCULATED" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_CATALOGUE_ID_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_CATALOGUE_ID_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_CHIFFRE_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_CHIFFRE_CALCULATED" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_CHIFFRE_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_CHIFFRE_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_ELEMENT_ID_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_ELEMENT_ID_CALCULATED" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_ELEMENT_ID_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_ELEMENT_ID_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_BU_OWNER_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_BU_OWNER_CALCULATED" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_BU_OWNER_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_BU_OWNER_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_INCOTERM_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_INCOTERM_CALCULATED" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_INCOTERM_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_INCOTERM_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_INCOTERM_LOCATION_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_INCOTERM_LOCATION_CALCULATED" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_INCOTERM_LOCATION_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_INCOTERM_LOCATION_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_SUPPLIER_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_SUPPLIER_CALCULATED" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_SUPPLIER_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_SUPPLIER_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_SUPPLIER_TYPE_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_SUPPLIER_TYPE_CALCULATED" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_SUPPLIER_TYPE_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_SUPPLIER_TYPE_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_REMARK_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_REMARK_CALCULATED" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_REMARK_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_REMARK_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_OWNER_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_OWNER_CALCULATED" Type="Edm.Int32"/>
+        <Property Name="CUST_OWNER_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_OWNER_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_BASIC_PRICE_MANUAL" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_BASIC_PRICE_CALCULATED" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_BASIC_PRICE_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_BASIC_PRICE_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_IGNORE_CQR_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_IGNORE_CQR_CALCULATED" Type="Edm.Int32"/>
+        <Property Name="CUST_IGNORE_CQR_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_IGNORE_CQR_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_FACTOR_MANUAL" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_FACTOR_CALCULATED" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_FACTOR_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_FACTOR_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_FACTOR_RESULT_MANUAL" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_FACTOR_RESULT_CALCULATED" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_FACTOR_RESULT_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_FACTOR_RESULT_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_ADJUSTMENT_MANUAL" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_ADJUSTMENT_CALCULATED" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_ADJUSTMENT_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_ADJUSTMENT_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_ADJUSTMENT_RESULT_MANUAL" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_ADJUSTMENT_RESULT_CALCULATED" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_ADJUSTMENT_RESULT_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_ADJUSTMENT_RESULT_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_BASIC_PRICE_PLAYFIELD_MANUAL" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_BASIC_PRICE_PLAYFIELD_CALCULATED" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_BASIC_PRICE_PLAYFIELD_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_BASIC_PRICE_PLAYFIELD_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_SALES_PRICE_MANUAL" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_SALES_PRICE_CALCULATED" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_SALES_PRICE_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_SALES_PRICE_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_USE_SALES_PRICE_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_USE_SALES_PRICE_CALCULATED" Type="Edm.Int32"/>
+        <Property Name="CUST_USE_SALES_PRICE_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_USE_SALES_PRICE_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_BOM_LEVEL_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_BOM_LEVEL_CALCULATED" Type="Edm.Int32"/>
+        <Property Name="CUST_BOM_LEVEL_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_BOM_LEVEL_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_MERGE_STATUS_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_MERGE_STATUS_CALCULATED" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_MERGE_STATUS_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_MERGE_STATUS_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_MERGE_LOG_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_MERGE_LOG_CALCULATED" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_MERGE_LOG_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_MERGE_LOG_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_NAVIGATOR_OPTION_NAME_DC_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_NAVIGATOR_OPTION_NAME_DC_CALCULATED" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_NAVIGATOR_OPTION_NAME_DC_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_NAVIGATOR_OPTION_NAME_DC_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_PRODUCT_CATEGORY_DC_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_PRODUCT_CATEGORY_DC_CALCULATED" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_PRODUCT_CATEGORY_DC_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_PRODUCT_CATEGORY_DC_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_PRODUCT_SERIES_DC_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_PRODUCT_SERIES_DC_CALCULATED" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_PRODUCT_SERIES_DC_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_PRODUCT_SERIES_DC_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_NAVIGATOR_OPTION_NUMBER_DC_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_NAVIGATOR_OPTION_NUMBER_DC_CALCULATED" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_NAVIGATOR_OPTION_NUMBER_DC_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_NAVIGATOR_OPTION_NUMBER_DC_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CMPR_INFNR_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CMPR_INFNR_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CMPR_EBELN_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CMPR_EBELN_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CMPR_BELNR_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CMPR_BELNR_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_NAVIGATOR_COST_UPDATED_MANUAL" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_NAVIGATOR_COST_UPDATED_CALCULATED" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_NAVIGATOR_COST_UPDATED_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_NAVIGATOR_COST_UPDATED_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_NAVIGATOR_COST_MANUAL" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_NAVIGATOR_COST_CALCULATED" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_NAVIGATOR_COST_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_NAVIGATOR_COST_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_IGNORE_MERGE_BOM_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_IGNORE_MERGE_BOM_CALCULATED" Type="Edm.Int32"/>
+        <Property Name="CUST_IGNORE_MERGE_BOM_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_IGNORE_MERGE_BOM_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_USE_TOTAL_COST_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_USE_TOTAL_COST_CALCULATED" Type="Edm.Int32"/>
+        <Property Name="CUST_USE_TOTAL_COST_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_USE_TOTAL_COST_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_IGNORE_QUANTITY_CHANGE_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_IGNORE_QUANTITY_CHANGE_CALCULATED" Type="Edm.Int32"/>
+        <Property Name="CUST_IGNORE_QUANTITY_CHANGE_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_IGNORE_QUANTITY_CHANGE_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CMPL_SOBSL_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CMPL_SOBSL_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CMPL_LVORM_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CMPL_LVORM_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CMPL_BESKZ_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CMPL_BESKZ_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CMPL_MMSTA_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CMPL_MMSTA_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CMPL_SBDKZ_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CMPL_SBDKZ_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CMPL_SOBSK_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CMPL_SOBSK_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CALCULATION_ID" Type="Edm.Int32"/>
+        <Property Name="CALCULATION_VERSION_NAME" Type="Edm.String" MaxLength="500"/>
+        <Property Name="STATUS_ID" Type="Edm.String" MaxLength="20"/>
+        <Property Name="CALCULATION_VERSION_TYPE" Type="Edm.Int32"/>
+        <Property Name="ROOT_ITEM_ID" Type="Edm.Int32"/>
+        <Property Name="CUSTOMER_ID" Type="Edm.String" MaxLength="10"/>
+        <Property Name="SALES_DOCUMENT" Type="Edm.String" MaxLength="100"/>
+        <Property Name="SALES_PRICE" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="SALES_PRICE_CURRENCY_ID" Type="Edm.String" MaxLength="3"/>
+        <Property Name="REPORT_CURRENCY_ID" Type="Edm.String" MaxLength="3"/>
+        <Property Name="COSTING_SHEET_ID" Type="Edm.String" MaxLength="15"/>
+        <Property Name="COMPONENT_SPLIT_ID" Type="Edm.String" MaxLength="35"/>
+        <Property Name="START_OF_PRODUCTION" Type="Edm.Date"/>
+        <Property Name="END_OF_PRODUCTION" Type="Edm.Date"/>
+        <Property Name="VALUATION_DATE" Type="Edm.Date"/>
+        <Property Name="MASTER_DATA_TIMESTAMP" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="LIFECYCLE_PERIOD_FROM" Type="Edm.Int32"/>
+        <Property Name="BASE_VERSION_ID" Type="Edm.Int32"/>
+        <Property Name="IS_FROZEN" Type="Edm.Int32"/>
+        <Property Name="VARIANT_ID" Type="Edm.Int32"/>
+        <Property Name="EXCHANGE_RATE_TYPE_ID" Type="Edm.String" MaxLength="20"/>
+        <Property Name="MATERIAL_PRICE_STRATEGY_ID" Type="Edm.String" MaxLength="20"/>
+        <Property Name="ACTIVITY_PRICE_STRATEGY_ID" Type="Edm.String" MaxLength="20"/>
+        <Property Name="SELECTED_TOTAL_COSTING_SHEET" Type="Edm.String" MaxLength="20"/>
+        <Property Name="SELECTED_TOTAL_COMPONENT_SPLIT" Type="Edm.String" MaxLength="20"/>
+        <Property Name="PROJECT_ID" Type="Edm.String" MaxLength="35"/>
+        <Property Name="CALCULATION_NAME" Type="Edm.String" MaxLength="500"/>
+        <Property Name="CURRENT_CALCULATION_VERSION_ID" Type="Edm.Int32"/>
+      </EntityType>
+      <EntityType Name="item_exts">
+        <Key>
+          <PropertyRef Name="CALCULATION_VERSION_ID"/>
+          <PropertyRef Name="ITEM_ID"/>
+        </Key>
+        <Property Name="CALCULATION_VERSION_ID" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="ITEM_ID" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="CUST_ACTIVITY_COST_MANUAL" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_ACTIVITY_COST_CALCULATED" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_ACTIVITY_COST_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_ACTIVITY_COST_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_COLLREQ_COST_MANUAL" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_COLLREQ_COST_CALCULATED" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_COLLREQ_COST_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_COLLREQ_COST_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_COLLREQ_COST_RATE_MANUAL" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_COLLREQ_COST_RATE_CALCULATED" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_COLLREQ_COST_RATE_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_COLLREQ_COST_RATE_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_MATERIAL_COST_MANUAL" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_MATERIAL_COST_CALCULATED" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_MATERIAL_COST_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_MATERIAL_COST_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_ACTIVITY_COST_RATE_MANUAL" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_ACTIVITY_COST_RATE_CALCULATED" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_ACTIVITY_COST_RATE_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_ACTIVITY_COST_RATE_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_MATERIAL_COST_RATE_MANUAL" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_MATERIAL_COST_RATE_CALCULATED" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_MATERIAL_COST_RATE_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_MATERIAL_COST_RATE_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_CALCULATION_RESPONSIBLE_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_CALCULATION_RESPONSIBLE_CALCULATED" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_CALCULATION_RESPONSIBLE_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_CALCULATION_RESPONSIBLE_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_CATALOGUE_ID_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_CATALOGUE_ID_CALCULATED" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_CATALOGUE_ID_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_CATALOGUE_ID_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_CHIFFRE_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_CHIFFRE_CALCULATED" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_CHIFFRE_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_CHIFFRE_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_ELEMENT_ID_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_ELEMENT_ID_CALCULATED" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_ELEMENT_ID_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_ELEMENT_ID_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_BU_OWNER_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_BU_OWNER_CALCULATED" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_BU_OWNER_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_BU_OWNER_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_INCOTERM_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_INCOTERM_CALCULATED" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_INCOTERM_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_INCOTERM_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_INCOTERM_LOCATION_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_INCOTERM_LOCATION_CALCULATED" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_INCOTERM_LOCATION_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_INCOTERM_LOCATION_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_SUPPLIER_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_SUPPLIER_CALCULATED" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_SUPPLIER_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_SUPPLIER_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_SUPPLIER_TYPE_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_SUPPLIER_TYPE_CALCULATED" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_SUPPLIER_TYPE_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_SUPPLIER_TYPE_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_REMARK_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_REMARK_CALCULATED" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_REMARK_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_REMARK_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_OWNER_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_OWNER_CALCULATED" Type="Edm.Int32"/>
+        <Property Name="CUST_OWNER_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_OWNER_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_BASIC_PRICE_MANUAL" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_BASIC_PRICE_CALCULATED" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_BASIC_PRICE_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_BASIC_PRICE_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_IGNORE_CQR_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_IGNORE_CQR_CALCULATED" Type="Edm.Int32"/>
+        <Property Name="CUST_IGNORE_CQR_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_IGNORE_CQR_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_FACTOR_MANUAL" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_FACTOR_CALCULATED" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_FACTOR_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_FACTOR_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_FACTOR_RESULT_MANUAL" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_FACTOR_RESULT_CALCULATED" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_FACTOR_RESULT_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_FACTOR_RESULT_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_ADJUSTMENT_MANUAL" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_ADJUSTMENT_CALCULATED" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_ADJUSTMENT_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_ADJUSTMENT_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_ADJUSTMENT_RESULT_MANUAL" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_ADJUSTMENT_RESULT_CALCULATED" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_ADJUSTMENT_RESULT_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_ADJUSTMENT_RESULT_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_BASIC_PRICE_PLAYFIELD_MANUAL" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_BASIC_PRICE_PLAYFIELD_CALCULATED" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_BASIC_PRICE_PLAYFIELD_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_BASIC_PRICE_PLAYFIELD_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_SALES_PRICE_MANUAL" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_SALES_PRICE_CALCULATED" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_SALES_PRICE_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_SALES_PRICE_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_USE_SALES_PRICE_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_USE_SALES_PRICE_CALCULATED" Type="Edm.Int32"/>
+        <Property Name="CUST_USE_SALES_PRICE_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_USE_SALES_PRICE_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_BOM_LEVEL_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_BOM_LEVEL_CALCULATED" Type="Edm.Int32"/>
+        <Property Name="CUST_BOM_LEVEL_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_BOM_LEVEL_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_MERGE_STATUS_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_MERGE_STATUS_CALCULATED" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_MERGE_STATUS_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_MERGE_STATUS_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_MERGE_LOG_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_MERGE_LOG_CALCULATED" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_MERGE_LOG_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_MERGE_LOG_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_NAVIGATOR_OPTION_NAME_DC_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_NAVIGATOR_OPTION_NAME_DC_CALCULATED" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_NAVIGATOR_OPTION_NAME_DC_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_NAVIGATOR_OPTION_NAME_DC_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_PRODUCT_CATEGORY_DC_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_PRODUCT_CATEGORY_DC_CALCULATED" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_PRODUCT_CATEGORY_DC_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_PRODUCT_CATEGORY_DC_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_PRODUCT_SERIES_DC_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_PRODUCT_SERIES_DC_CALCULATED" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_PRODUCT_SERIES_DC_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_PRODUCT_SERIES_DC_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_NAVIGATOR_OPTION_NUMBER_DC_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_NAVIGATOR_OPTION_NUMBER_DC_CALCULATED" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CUST_NAVIGATOR_OPTION_NUMBER_DC_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_NAVIGATOR_OPTION_NUMBER_DC_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CMPR_INFNR_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CMPR_INFNR_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CMPR_EBELN_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CMPR_EBELN_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CMPR_BELNR_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CMPR_BELNR_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_NAVIGATOR_COST_UPDATED_MANUAL" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_NAVIGATOR_COST_UPDATED_CALCULATED" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_NAVIGATOR_COST_UPDATED_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_NAVIGATOR_COST_UPDATED_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_NAVIGATOR_COST_MANUAL" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_NAVIGATOR_COST_CALCULATED" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CUST_NAVIGATOR_COST_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_NAVIGATOR_COST_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_IGNORE_MERGE_BOM_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_IGNORE_MERGE_BOM_CALCULATED" Type="Edm.Int32"/>
+        <Property Name="CUST_IGNORE_MERGE_BOM_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_IGNORE_MERGE_BOM_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_USE_TOTAL_COST_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_USE_TOTAL_COST_CALCULATED" Type="Edm.Int32"/>
+        <Property Name="CUST_USE_TOTAL_COST_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_USE_TOTAL_COST_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CUST_IGNORE_QUANTITY_CHANGE_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_IGNORE_QUANTITY_CHANGE_CALCULATED" Type="Edm.Int32"/>
+        <Property Name="CUST_IGNORE_QUANTITY_CHANGE_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="CUST_IGNORE_QUANTITY_CHANGE_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CMPL_SOBSL_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CMPL_SOBSL_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CMPL_LVORM_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CMPL_LVORM_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CMPL_BESKZ_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CMPL_BESKZ_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CMPL_SBDKZ_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CMPL_SBDKZ_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CMPL_MMSTA_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CMPL_MMSTA_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CMPL_SOBSK_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CMPL_SOBSK_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CMAT_AESZN_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CMAT_AESZN_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CMPL_LOSGR_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CMPL_LOSGR_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CMPL_KAUSF_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CMPL_KAUSF_UNIT" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CMPL_BSTFE_MANUAL" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="CMPL_BSTFE_UNIT" Type="Edm.String" MaxLength="3"/>
+      </EntityType>
+      <EntityType Name="items">
+        <Key>
+          <PropertyRef Name="ITEM_ID"/>
+          <PropertyRef Name="CALCULATION_VERSION_ID"/>
+        </Key>
+        <Property Name="ITEM_ID" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="CALCULATION_VERSION_ID" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="PRICE_FOR_TOTAL_QUANTITY3" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="COMPANY_CODE_ID" Type="Edm.String" MaxLength="4"/>
+        <Property Name="HIGHLIGHT_ORANGE" Type="Edm.Int32"/>
+        <Property Name="PRICE_ID" Type="Edm.String" MaxLength="32"/>
+        <Property Name="TOTAL_COST_PER_UNIT_VARIABLE_PORTION" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="DOCUMENT_VERSION" Type="Edm.String" MaxLength="2"/>
+        <Property Name="QUANTITY_UOM_ID" Type="Edm.String" MaxLength="3"/>
+        <Property Name="CREATED_ON" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="TOTAL_COST3_PER_UNIT_FIXED_PORTION" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="VALUATION_CLASS_ID" Type="Edm.String" MaxLength="4"/>
+        <Property Name="PRICE_FIXED_PORTION" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="PRICE_FOR_TOTAL_QUANTITY3_FIXED_PORTION" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="COST_CENTER_ID" Type="Edm.String" MaxLength="10"/>
+        <Property Name="HIGHLIGHT_YELLOW" Type="Edm.Int32"/>
+        <Property Name="CONFIDENCE_LEVEL_ID" Type="Edm.Int32"/>
+        <Property Name="TOTAL_COST2" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="DOCUMENT_PART" Type="Edm.String" MaxLength="3"/>
+        <Property Name="TOTAL_QUANTITY" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="CREATED_BY" Type="Edm.String" MaxLength="256"/>
+        <Property Name="TOTAL_COST3_PER_UNIT_VARIABLE_PORTION" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="PURCHASING_GROUP" Type="Edm.String" MaxLength="20"/>
+        <Property Name="PRICE_FIXED_PORTION_CALCULATED" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="PRICE_FOR_TOTAL_QUANTITY3_VARIABLE_PORTION" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="PLANT_ID" Type="Edm.String" MaxLength="8"/>
+        <Property Name="ITEM_CATEGORY_ID" Type="Edm.Int32"/>
+        <Property Name="PRICE_SOURCE_ID" Type="Edm.String" MaxLength="20"/>
+        <Property Name="TOTAL_COST2_FIXED_PORTION" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="DOCUMENT_STATUS_ID" Type="Edm.String" MaxLength="2"/>
+        <Property Name="TOTAL_QUANTITY_UOM_ID" Type="Edm.String" MaxLength="3"/>
+        <Property Name="LAST_MODIFIED_ON" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="BOM_COMPARE_KEY" Type="Edm.String" MaxLength="256"/>
+        <Property Name="PURCHASING_DOCUMENT" Type="Edm.String" MaxLength="10"/>
+        <Property Name="PRICE_FIXED_PORTION_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="OTHER_COST" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="WORK_CENTER_ID" Type="Edm.String" MaxLength="15"/>
+        <Property Name="ITEM_DESCRIPTION" Type="Edm.String" MaxLength="250"/>
+        <Property Name="PRICE_SOURCE_TYPE_ID" Type="Edm.Int32"/>
+        <Property Name="TOTAL_COST2_VARIABLE_PORTION" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="DESIGN_OFFICE_ID" Type="Edm.String" MaxLength="3"/>
+        <Property Name="TOTAL_QUANTITY_DEPENDS_ON" Type="Edm.Int32"/>
+        <Property Name="LAST_MODIFIED_BY" Type="Edm.String" MaxLength="256"/>
+        <Property Name="LOCAL_CONTENT" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="PRICE_VARIABLE_PORTION" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="OTHER_COST_FIXED_PORTION" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="WORK_CENTER_CATEGORY" Type="Edm.String" MaxLength="50"/>
+        <Property Name="REFERENCED_CALCULATION_VERSION_ID" Type="Edm.Int32"/>
+        <Property Name="SURCHARGE" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="TOTAL_COST2_PER_UNIT" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="MATERIAL_ID" Type="Edm.String" MaxLength="40"/>
+        <Property Name="TOTAL_QUANTITY_OF_VARIANTS" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="PRICE_FOR_TOTAL_QUANTITY" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="ACTIVITY_TYPE_ID" Type="Edm.String" MaxLength="12"/>
+        <Property Name="PRICE_VARIABLE_PORTION_CALCULATED" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="OTHER_COST_VARIABLE_PORTION" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="EFFICIENCY" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="COMMENT" Type="Edm.String" MaxLength="5000"/>
+        <Property Name="IS_DISABLING_PRICE_DETERMINATION" Type="Edm.Int32"/>
+        <Property Name="TOTAL_COST2_PER_UNIT_FIXED_PORTION" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="MATERIAL_TYPE_ID" Type="Edm.String" MaxLength="4"/>
+        <Property Name="IS_RELEVANT_TO_COSTING_IN_ERP" Type="Edm.Int32"/>
+        <Property Name="PRICE_FOR_TOTAL_QUANTITY_FIXED_PORTION" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="PROCESS_ID" Type="Edm.String" MaxLength="12"/>
+        <Property Name="PRICE_VARIABLE_PORTION_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="TOTAL_COST" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="BUSINESS_AREA_ID" Type="Edm.String" MaxLength="15"/>
+        <Property Name="VENDOR_ID" Type="Edm.String" MaxLength="10"/>
+        <Property Name="TOTAL_COST2_PER_UNIT_VARIABLE_PORTION" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="MATERIAL_GROUP_ID" Type="Edm.String" MaxLength="9"/>
+        <Property Name="BASE_QUANTITY" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="PRICE_FOR_TOTAL_QUANTITY_VARIABLE_PORTION" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="LOT_SIZE" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="PRICE" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="PARENT_ITEM_ID" Type="Edm.Int32"/>
+        <Property Name="PRICE_UNIT_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="TOTAL_COST_FIXED_PORTION" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="ACCOUNT_ID" Type="Edm.String" MaxLength="10"/>
+        <Property Name="PROFIT_CENTER_ID" Type="Edm.String" MaxLength="10"/>
+        <Property Name="TARGET_COST" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="TOTAL_COST3" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="IS_PHANTOM_MATERIAL" Type="Edm.Int32"/>
+        <Property Name="BASE_QUANTITY_CALCULATED" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="PRICE_FOR_TOTAL_QUANTITY2" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="LOT_SIZE_CALCULATED" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="TRANSACTION_CURRENCY_ID" Type="Edm.String" MaxLength="3"/>
+        <Property Name="PREDECESSOR_ITEM_ID" Type="Edm.Int32"/>
+        <Property Name="PRICE_UNIT_UOM_ID" Type="Edm.String" MaxLength="3"/>
+        <Property Name="TOTAL_COST_VARIABLE_PORTION" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="DETERMINED_ACCOUNT_ID" Type="Edm.String" MaxLength="10"/>
+        <Property Name="QUANTITY" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="TARGET_COST_CALCULATED" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="TOTAL_COST3_FIXED_PORTION" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="IS_CONFIGURABLE_MATERIAL" Type="Edm.Int32"/>
+        <Property Name="BASE_QUANTITY_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="PRICE_FOR_TOTAL_QUANTITY2_FIXED_PORTION" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="LOT_SIZE_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="PRICE_UNIT" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="IS_ACTIVE" Type="Edm.Int32"/>
+        <Property Name="IS_PRICE_SPLIT_ACTIVE" Type="Edm.Int32"/>
+        <Property Name="TOTAL_COST_PER_UNIT" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="DOCUMENT_TYPE_ID" Type="Edm.String" MaxLength="3"/>
+        <Property Name="QUANTITY_CALCULATED" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="TARGET_COST_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="TOTAL_COST3_VARIABLE_PORTION" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="MATERIAL_SOURCE" Type="Edm.Int32"/>
+        <Property Name="QUANTITY_PER_BASE_UNIT" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="PRICE_FOR_TOTAL_QUANTITY2_VARIABLE_PORTION" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="ENGINEERING_CHANGE_NUMBER_ID" Type="Edm.String" MaxLength="250"/>
+        <Property Name="PRICE_UNIT_CALCULATED" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="HIGHLIGHT_GREEN" Type="Edm.Int32"/>
+        <Property Name="IS_DISABLING_ACCOUNT_DETERMINATION" Type="Edm.Int32"/>
+        <Property Name="TOTAL_COST_PER_UNIT_FIXED_PORTION" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="DOCUMENT_ID" Type="Edm.String" MaxLength="40"/>
+        <Property Name="QUANTITY_IS_MANUAL" Type="Edm.Int32"/>
+        <Property Name="TARGET_COST_CURRENCY_ID" Type="Edm.String"/>
+        <Property Name="TOTAL_COST3_PER_UNIT" Type="Edm.Decimal" Scale="7" Precision="28"/>
+        <Property Name="OVERHEAD_GROUP_ID" Type="Edm.String" MaxLength="10"/>
+        <Property Name="QUANTITY_PER_BASE_UNIT_UOM_ID" Type="Edm.String"/>
+      </EntityType>
+      <EntityType Name="lay_join">
+        <Property Name="LAYOUT_ID" Type="Edm.Int32"/>
+        <Property Name="DISPLAY_ORDER" Type="Edm.Int32"/>
+        <Property Name="PATH" Type="Edm.String" MaxLength="127"/>
+        <Property Name="BUSINESS_OBJECT" Type="Edm.String" MaxLength="127"/>
+        <Property Name="COLUMN_ID" Type="Edm.String" MaxLength="127"/>
+        <Property Name="COSTING_SHEET_ROW_ID" Type="Edm.String" MaxLength="5"/>
+        <Property Name="COST_COMPONENT_ID" Type="Edm.Int32"/>
+        <Property Name="COLUMN_WIDTH" Type="Edm.Int32"/>
+        <Property Name="LAYOUT_NAME" Type="Edm.String" MaxLength="127"/>
+        <Property Name="LAYOUT_TYPE" Type="Edm.Int32"/>
+        <Property Name="IS_COPRPORATE" Type="Edm.Int32"/>
+      </EntityType>
+      <EntityType Name="layout_columns">
+        <Key>
+          <PropertyRef Name="LAYOUT_ID"/>
+        </Key>
+        <Property Name="LAYOUT_ID" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="DISPLAY_ORDER" Type="Edm.Int32"/>
+        <Property Name="PATH" Type="Edm.String" MaxLength="127"/>
+        <Property Name="BUSINESS_OBJECT" Type="Edm.String" MaxLength="127"/>
+        <Property Name="COLUMN_WIDTH" Type="Edm.Int32"/>
+        <Property Name="COLUMN_ID" Type="Edm.String" MaxLength="127"/>
+        <Property Name="COSTING_SHEET_ROW_ID" Type="Edm.String" MaxLength="5"/>
+        <Property Name="COST_COMPONENT_ID" Type="Edm.Int32"/>
+      </EntityType>
+      <EntityType Name="layouts">
+        <Key>
+          <PropertyRef Name="LAYOUT_ID"/>
+        </Key>
+        <Property Name="LAYOUT_ID" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="LAYOUT_NAME" Type="Edm.String" MaxLength="127"/>
+        <Property Name="IS_CORPORATE" Type="Edm.Int32"/>
+        <Property Name="LAYOUT_TYPE" Type="Edm.Int32"/>
+      </EntityType>
+      <EntityType Name="t_layout_view">
+        <Key>
+          <PropertyRef Name="LAYOUT_ID"/>
+        </Key>
+        <Property Name="LAYOUT_ID" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="LAYOUT_NAME" Type="Edm.String" MaxLength="127"/>
+        <Property Name="IS_CORPORATE" Type="Edm.Int32"/>
+        <Property Name="LAYOUT_TYPE" Type="Edm.Int32"/>
+      </EntityType>
+      <Annotations Target="ExcelExportSrv.calculation_versions">
+        <Annotation Term="Capabilities.DeleteRestirictions">
+          <Record>
+            <PropertyValue Property="Deletable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.InsertRestirictions">
+          <Record>
+            <PropertyValue Property="Insertable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.UpdateRestirictions">
+          <Record>
+            <PropertyValue Property="Updatable" Bool="false"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="ExcelExportSrv.calculations">
+        <Annotation Term="Capabilities.DeleteRestirictions">
+          <Record>
+            <PropertyValue Property="Deletable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.InsertRestirictions">
+          <Record>
+            <PropertyValue Property="Insertable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.UpdateRestirictions">
+          <Record>
+            <PropertyValue Property="Updatable" Bool="false"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="ExcelExportSrv.item_exts">
+        <Annotation Term="Capabilities.DeleteRestirictions">
+          <Record>
+            <PropertyValue Property="Deletable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.InsertRestirictions">
+          <Record>
+            <PropertyValue Property="Insertable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.UpdateRestirictions">
+          <Record>
+            <PropertyValue Property="Updatable" Bool="false"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="ExcelExportSrv.items">
+        <Annotation Term="Capabilities.DeleteRestirictions">
+          <Record>
+            <PropertyValue Property="Deletable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.InsertRestirictions">
+          <Record>
+            <PropertyValue Property="Insertable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.UpdateRestirictions">
+          <Record>
+            <PropertyValue Property="Updatable" Bool="false"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="ExcelExportSrv.layout_columns">
+        <Annotation Term="Capabilities.DeleteRestirictions">
+          <Record>
+            <PropertyValue Property="Deletable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.InsertRestirictions">
+          <Record>
+            <PropertyValue Property="Insertable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.UpdateRestirictions">
+          <Record>
+            <PropertyValue Property="Updatable" Bool="false"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="ExcelExportSrv.layouts">
+        <Annotation Term="Capabilities.DeleteRestirictions">
+          <Record>
+            <PropertyValue Property="Deletable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.InsertRestirictions">
+          <Record>
+            <PropertyValue Property="Insertable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.UpdateRestirictions">
+          <Record>
+            <PropertyValue Property="Updatable" Bool="false"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>

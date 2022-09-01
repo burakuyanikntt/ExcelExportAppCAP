@@ -1,0 +1,10 @@
+VIEW ExcelExportSrv_calculations AS SELECT
+  t_calculation_0.CALCULATION_ID,
+  t_calculation_0.PROJECT_ID,
+  t_calculation_0.CALCULATION_NAME,
+  t_calculation_0.CURRENT_CALCULATION_VERSION_ID,
+  t_calculation_0.CREATED_ON,
+  t_calculation_0.CREATED_BY,
+  t_calculation_0.LAST_MODIFIED_ON,
+  t_calculation_0.LAST_MODIFIED_BY
+FROM T_CALCULATION AS t_calculation_0

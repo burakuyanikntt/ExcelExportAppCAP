@@ -1,0 +1,10 @@
+VIEW ExcelExportSrv_layout_columns AS SELECT
+  t_layout_column_0.LAYOUT_ID,
+  t_layout_column_0.DISPLAY_ORDER,
+  t_layout_column_0.PATH,
+  t_layout_column_0.BUSINESS_OBJECT,
+  t_layout_column_0.COLUMN_WIDTH,
+  t_layout_column_0.COLUMN_ID,
+  t_layout_column_0.COSTING_SHEET_ROW_ID,
+  t_layout_column_0.COST_COMPONENT_ID
+FROM T_LAYOUT_COLUMN AS t_layout_column_0

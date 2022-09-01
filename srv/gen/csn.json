@@ -1,0 +1,6709 @@
+{
+  "definitions": {
+    "ExcelExportSrv": {
+      "@source": "srv/main-service.cds",
+      "kind": "service",
+      "@impl": "main-service.js"
+    },
+    "ExcelExportSrv.calculation_versions": {
+      "kind": "entity",
+      "@Capabilities.DeleteRestirictions.Deletable": false,
+      "@Capabilities.InsertRestirictions.Insertable": false,
+      "@Capabilities.UpdateRestirictions.Updatable": false,
+      "query": {
+        "SELECT": {
+          "from": {
+            "ref": [
+              "T_CALCULATION_VERSION"
+            ],
+            "as": "t_calculation_version"
+          }
+        }
+      },
+      "elements": {
+        "CALCULATION_VERSION_ID": {
+          "key": true,
+          "type": "cds.Integer"
+        },
+        "CALCULATION_ID": {
+          "type": "cds.Integer"
+        },
+        "CALCULATION_VERSION_NAME": {
+          "type": "cds.String",
+          "length": 500
+        },
+        "STATUS_ID": {
+          "type": "cds.String",
+          "length": 20
+        },
+        "CALCULATION_VERSION_TYPE": {
+          "type": "cds.Integer"
+        },
+        "ROOT_ITEM_ID": {
+          "type": "cds.Integer"
+        },
+        "CUSTOMER_ID": {
+          "type": "cds.String",
+          "length": 10
+        },
+        "SALES_DOCUMENT": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "SALES_PRICE": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "SALES_PRICE_CURRENCY_ID": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "REPORT_CURRENCY_ID": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "COSTING_SHEET_ID": {
+          "type": "cds.String",
+          "length": 15
+        },
+        "COMPONENT_SPLIT_ID": {
+          "type": "cds.String",
+          "length": 35
+        },
+        "START_OF_PRODUCTION": {
+          "type": "cds.Date"
+        },
+        "END_OF_PRODUCTION": {
+          "type": "cds.Date"
+        },
+        "VALUATION_DATE": {
+          "type": "cds.Date"
+        },
+        "LAST_MODIFIED_ON": {
+          "type": "cds.Timestamp"
+        },
+        "LAST_MODIFIED_BY": {
+          "type": "cds.String",
+          "length": 256
+        },
+        "MASTER_DATA_TIMESTAMP": {
+          "type": "cds.Timestamp"
+        },
+        "LIFECYCLE_PERIOD_FROM": {
+          "type": "cds.Integer"
+        },
+        "BASE_VERSION_ID": {
+          "type": "cds.Integer"
+        },
+        "IS_FROZEN": {
+          "type": "cds.Integer"
+        },
+        "VARIANT_ID": {
+          "type": "cds.Integer"
+        },
+        "EXCHANGE_RATE_TYPE_ID": {
+          "type": "cds.String",
+          "length": 20
+        },
+        "MATERIAL_PRICE_STRATEGY_ID": {
+          "type": "cds.String",
+          "length": 20
+        },
+        "ACTIVITY_PRICE_STRATEGY_ID": {
+          "type": "cds.String",
+          "length": 20
+        },
+        "SELECTED_TOTAL_COSTING_SHEET": {
+          "type": "cds.String",
+          "length": 20
+        },
+        "SELECTED_TOTAL_COMPONENT_SPLIT": {
+          "type": "cds.String",
+          "length": 20
+        }
+      },
+      "$syntax": "entity"
+    },
+    "ExcelExportSrv.calculations": {
+      "kind": "entity",
+      "@Capabilities.DeleteRestirictions.Deletable": false,
+      "@Capabilities.InsertRestirictions.Insertable": false,
+      "@Capabilities.UpdateRestirictions.Updatable": false,
+      "query": {
+        "SELECT": {
+          "from": {
+            "ref": [
+              "T_CALCULATION"
+            ],
+            "as": "t_calculation"
+          }
+        }
+      },
+      "elements": {
+        "CALCULATION_ID": {
+          "key": true,
+          "type": "cds.Integer"
+        },
+        "PROJECT_ID": {
+          "type": "cds.String",
+          "length": 35
+        },
+        "CALCULATION_NAME": {
+          "type": "cds.String",
+          "length": 500
+        },
+        "CURRENT_CALCULATION_VERSION_ID": {
+          "type": "cds.Integer"
+        },
+        "CREATED_ON": {
+          "type": "cds.Timestamp"
+        },
+        "CREATED_BY": {
+          "type": "cds.String",
+          "length": 256
+        },
+        "LAST_MODIFIED_ON": {
+          "type": "cds.Timestamp"
+        },
+        "LAST_MODIFIED_BY": {
+          "type": "cds.String",
+          "length": 256
+        }
+      },
+      "$syntax": "entity"
+    },
+    "ExcelExportSrv.item_cal_join": {
+      "kind": "entity",
+      "query": {
+        "SELECT": {
+          "from": {
+            "join": "left",
+            "args": [
+              {
+                "join": "left",
+                "args": [
+                  {
+                    "join": "left",
+                    "args": [
+                      {
+                        "ref": [
+                          "T_ITEM"
+                        ],
+                        "as": "t_item"
+                      },
+                      {
+                        "ref": [
+                          "T_ITEM_EXT"
+                        ],
+                        "as": "t_item_join"
+                      }
+                    ],
+                    "on": [
+                      {
+                        "ref": [
+                          "t_item",
+                          "CALCULATION_VERSION_ID"
+                        ]
+                      },
+                      "=",
+                      {
+                        "ref": [
+                          "t_item_join",
+                          "CALCULATION_VERSION_ID"
+                        ]
+                      },
+                      "and",
+                      {
+                        "ref": [
+                          "t_item",
+                          "ITEM_ID"
+                        ]
+                      },
+                      "=",
+                      {
+                        "ref": [
+                          "t_item_join",
+                          "ITEM_ID"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "ref": [
+                      "T_CALCULATION_VERSION"
+                    ],
+                    "as": "calver"
+                  }
+                ],
+                "on": [
+                  {
+                    "ref": [
+                      "t_item_join",
+                      "CALCULATION_VERSION_ID"
+                    ]
+                  },
+                  "=",
+                  {
+                    "ref": [
+                      "calver",
+                      "CALCULATION_VERSION_ID"
+                    ]
+                  }
+                ]
+              },
+              {
+                "ref": [
+                  "T_CALCULATION"
+                ],
+                "as": "t_calculation"
+              }
+            ],
+            "on": [
+              {
+                "ref": [
+                  "t_calculation",
+                  "CALCULATION_ID"
+                ]
+              },
+              "=",
+              {
+                "ref": [
+                  "calver",
+                  "CALCULATION_ID"
+                ]
+              }
+            ]
+          },
+          "columns": [
+            {
+              "ref": [
+                "t_item",
+                "ITEM_ID"
+              ],
+              "as": "ITEM_ID"
+            },
+            {
+              "ref": [
+                "t_item",
+                "CALCULATION_VERSION_ID"
+              ],
+              "as": "CALCULATION_VERSION_ID"
+            },
+            {
+              "ref": [
+                "t_item",
+                "PARENT_ITEM_ID"
+              ],
+              "as": "PARENT_ITEM_ID"
+            },
+            {
+              "ref": [
+                "t_item",
+                "PREDECESSOR_ITEM_ID"
+              ],
+              "as": "PREDECESSOR_ITEM_ID"
+            },
+            {
+              "ref": [
+                "t_item",
+                "IS_ACTIVE"
+              ],
+              "as": "IS_ACTIVE"
+            },
+            {
+              "ref": [
+                "t_item",
+                "HIGHLIGHT_GREEN"
+              ],
+              "as": "HIGHLIGHT_GREEN"
+            },
+            {
+              "ref": [
+                "t_item",
+                "HIGHLIGHT_ORANGE"
+              ],
+              "as": "HIGHLIGHT_ORANGE"
+            },
+            {
+              "ref": [
+                "t_item",
+                "HIGHLIGHT_YELLOW"
+              ],
+              "as": "HIGHLIGHT_YELLOW"
+            },
+            {
+              "ref": [
+                "t_item",
+                "ITEM_CATEGORY_ID"
+              ],
+              "as": "ITEM_CATEGORY_ID"
+            },
+            {
+              "ref": [
+                "t_item",
+                "ITEM_DESCRIPTION"
+              ],
+              "as": "ITEM_DESCRIPTION"
+            },
+            {
+              "ref": [
+                "t_item",
+                "REFERENCED_CALCULATION_VERSION_ID"
+              ],
+              "as": "REFERENCED_CALCULATION_VERSION_ID"
+            },
+            {
+              "ref": [
+                "t_item",
+                "COMMENT"
+              ],
+              "as": "COMMENT"
+            },
+            {
+              "ref": [
+                "t_item",
+                "ACCOUNT_ID"
+              ],
+              "as": "ACCOUNT_ID"
+            },
+            {
+              "ref": [
+                "t_item",
+                "DETERMINED_ACCOUNT_ID"
+              ],
+              "as": "DETERMINED_ACCOUNT_ID"
+            },
+            {
+              "ref": [
+                "t_item",
+                "DOCUMENT_TYPE_ID"
+              ],
+              "as": "DOCUMENT_TYPE_ID"
+            },
+            {
+              "ref": [
+                "t_item",
+                "DOCUMENT_ID"
+              ],
+              "as": "DOCUMENT_ID"
+            },
+            {
+              "ref": [
+                "t_item",
+                "DOCUMENT_VERSION"
+              ],
+              "as": "DOCUMENT_VERSION"
+            },
+            {
+              "ref": [
+                "t_item",
+                "DOCUMENT_PART"
+              ],
+              "as": "DOCUMENT_PART"
+            },
+            {
+              "ref": [
+                "t_item",
+                "DOCUMENT_STATUS_ID"
+              ],
+              "as": "DOCUMENT_STATUS_ID"
+            },
+            {
+              "ref": [
+                "t_item",
+                "DESIGN_OFFICE_ID"
+              ],
+              "as": "DESIGN_OFFICE_ID"
+            },
+            {
+              "ref": [
+                "t_item",
+                "MATERIAL_ID"
+              ],
+              "as": "MATERIAL_ID"
+            },
+            {
+              "ref": [
+                "t_item",
+                "MATERIAL_TYPE_ID"
+              ],
+              "as": "MATERIAL_TYPE_ID"
+            },
+            {
+              "ref": [
+                "t_item",
+                "MATERIAL_GROUP_ID"
+              ],
+              "as": "MATERIAL_GROUP_ID"
+            },
+            {
+              "ref": [
+                "t_item",
+                "IS_PHANTOM_MATERIAL"
+              ],
+              "as": "IS_PHANTOM_MATERIAL"
+            },
+            {
+              "ref": [
+                "t_item",
+                "IS_CONFIGURABLE_MATERIAL"
+              ],
+              "as": "IS_CONFIGURABLE_MATERIAL"
+            },
+            {
+              "ref": [
+                "t_item",
+                "MATERIAL_SOURCE"
+              ],
+              "as": "MATERIAL_SOURCE"
+            },
+            {
+              "ref": [
+                "t_item",
+                "OVERHEAD_GROUP_ID"
+              ],
+              "as": "OVERHEAD_GROUP_ID"
+            },
+            {
+              "ref": [
+                "t_item",
+                "VALUATION_CLASS_ID"
+              ],
+              "as": "VALUATION_CLASS_ID"
+            },
+            {
+              "ref": [
+                "t_item",
+                "PURCHASING_GROUP"
+              ],
+              "as": "PURCHASING_GROUP"
+            },
+            {
+              "ref": [
+                "t_item",
+                "PURCHASING_DOCUMENT"
+              ],
+              "as": "PURCHASING_DOCUMENT"
+            },
+            {
+              "ref": [
+                "t_item",
+                "LOCAL_CONTENT"
+              ],
+              "as": "LOCAL_CONTENT"
+            },
+            {
+              "ref": [
+                "t_item",
+                "ACTIVITY_TYPE_ID"
+              ],
+              "as": "ACTIVITY_TYPE_ID"
+            },
+            {
+              "ref": [
+                "t_item",
+                "PROCESS_ID"
+              ],
+              "as": "PROCESS_ID"
+            },
+            {
+              "ref": [
+                "t_item",
+                "LOT_SIZE"
+              ],
+              "as": "LOT_SIZE"
+            },
+            {
+              "ref": [
+                "t_item",
+                "LOT_SIZE_CALCULATED"
+              ],
+              "as": "LOT_SIZE_CALCULATED"
+            },
+            {
+              "ref": [
+                "t_item",
+                "LOT_SIZE_IS_MANUAL"
+              ],
+              "as": "LOT_SIZE_IS_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item",
+                "ENGINEERING_CHANGE_NUMBER_ID"
+              ],
+              "as": "ENGINEERING_CHANGE_NUMBER_ID"
+            },
+            {
+              "ref": [
+                "t_item",
+                "COMPANY_CODE_ID"
+              ],
+              "as": "COMPANY_CODE_ID"
+            },
+            {
+              "ref": [
+                "t_item",
+                "COST_CENTER_ID"
+              ],
+              "as": "COST_CENTER_ID"
+            },
+            {
+              "ref": [
+                "t_item",
+                "PLANT_ID"
+              ],
+              "as": "PLANT_ID"
+            },
+            {
+              "ref": [
+                "t_item",
+                "WORK_CENTER_ID"
+              ],
+              "as": "WORK_CENTER_ID"
+            },
+            {
+              "ref": [
+                "t_item",
+                "WORK_CENTER_CATEGORY"
+              ],
+              "as": "WORK_CENTER_CATEGORY"
+            },
+            {
+              "ref": [
+                "t_item",
+                "EFFICIENCY"
+              ],
+              "as": "EFFICIENCY"
+            },
+            {
+              "ref": [
+                "t_item",
+                "BUSINESS_AREA_ID"
+              ],
+              "as": "BUSINESS_AREA_ID"
+            },
+            {
+              "ref": [
+                "t_item",
+                "PROFIT_CENTER_ID"
+              ],
+              "as": "PROFIT_CENTER_ID"
+            },
+            {
+              "ref": [
+                "t_item",
+                "QUANTITY"
+              ],
+              "as": "QUANTITY"
+            },
+            {
+              "ref": [
+                "t_item",
+                "QUANTITY_CALCULATED"
+              ],
+              "as": "QUANTITY_CALCULATED"
+            },
+            {
+              "ref": [
+                "t_item",
+                "QUANTITY_IS_MANUAL"
+              ],
+              "as": "QUANTITY_IS_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item",
+                "QUANTITY_UOM_ID"
+              ],
+              "as": "QUANTITY_UOM_ID"
+            },
+            {
+              "ref": [
+                "t_item",
+                "TOTAL_QUANTITY"
+              ],
+              "as": "TOTAL_QUANTITY"
+            },
+            {
+              "ref": [
+                "t_item",
+                "TOTAL_QUANTITY_UOM_ID"
+              ],
+              "as": "TOTAL_QUANTITY_UOM_ID"
+            },
+            {
+              "ref": [
+                "t_item",
+                "TOTAL_QUANTITY_DEPENDS_ON"
+              ],
+              "as": "TOTAL_QUANTITY_DEPENDS_ON"
+            },
+            {
+              "ref": [
+                "t_item",
+                "TOTAL_QUANTITY_OF_VARIANTS"
+              ],
+              "as": "TOTAL_QUANTITY_OF_VARIANTS"
+            },
+            {
+              "ref": [
+                "t_item",
+                "IS_RELEVANT_TO_COSTING_IN_ERP"
+              ],
+              "as": "IS_RELEVANT_TO_COSTING_IN_ERP"
+            },
+            {
+              "ref": [
+                "t_item",
+                "BASE_QUANTITY"
+              ],
+              "as": "BASE_QUANTITY"
+            },
+            {
+              "ref": [
+                "t_item",
+                "BASE_QUANTITY_CALCULATED"
+              ],
+              "as": "BASE_QUANTITY_CALCULATED"
+            },
+            {
+              "ref": [
+                "t_item",
+                "BASE_QUANTITY_IS_MANUAL"
+              ],
+              "as": "BASE_QUANTITY_IS_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item",
+                "QUANTITY_PER_BASE_UNIT"
+              ],
+              "as": "QUANTITY_PER_BASE_UNIT"
+            },
+            {
+              "ref": [
+                "t_item",
+                "QUANTITY_PER_BASE_UNIT_UOM_ID"
+              ],
+              "as": "QUANTITY_PER_BASE_UNIT_UOM_ID"
+            },
+            {
+              "ref": [
+                "t_item",
+                "PRICE_FIXED_PORTION"
+              ],
+              "as": "PRICE_FIXED_PORTION"
+            },
+            {
+              "ref": [
+                "t_item",
+                "PRICE_FIXED_PORTION_CALCULATED"
+              ],
+              "as": "PRICE_FIXED_PORTION_CALCULATED"
+            },
+            {
+              "ref": [
+                "t_item",
+                "PRICE_FIXED_PORTION_IS_MANUAL"
+              ],
+              "as": "PRICE_FIXED_PORTION_IS_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item",
+                "PRICE_VARIABLE_PORTION"
+              ],
+              "as": "PRICE_VARIABLE_PORTION"
+            },
+            {
+              "ref": [
+                "t_item",
+                "PRICE_VARIABLE_PORTION_CALCULATED"
+              ],
+              "as": "PRICE_VARIABLE_PORTION_CALCULATED"
+            },
+            {
+              "ref": [
+                "t_item",
+                "PRICE_VARIABLE_PORTION_IS_MANUAL"
+              ],
+              "as": "PRICE_VARIABLE_PORTION_IS_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item",
+                "PRICE"
+              ],
+              "as": "PRICE"
+            },
+            {
+              "ref": [
+                "t_item",
+                "TRANSACTION_CURRENCY_ID"
+              ],
+              "as": "TRANSACTION_CURRENCY_ID"
+            },
+            {
+              "ref": [
+                "t_item",
+                "PRICE_UNIT"
+              ],
+              "as": "PRICE_UNIT"
+            },
+            {
+              "ref": [
+                "t_item",
+                "PRICE_UNIT_CALCULATED"
+              ],
+              "as": "PRICE_UNIT_CALCULATED"
+            },
+            {
+              "ref": [
+                "t_item",
+                "PRICE_UNIT_IS_MANUAL"
+              ],
+              "as": "PRICE_UNIT_IS_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item",
+                "PRICE_UNIT_UOM_ID"
+              ],
+              "as": "PRICE_UNIT_UOM_ID"
+            },
+            {
+              "ref": [
+                "t_item",
+                "IS_PRICE_SPLIT_ACTIVE"
+              ],
+              "as": "IS_PRICE_SPLIT_ACTIVE"
+            },
+            {
+              "ref": [
+                "t_item",
+                "IS_DISABLING_ACCOUNT_DETERMINATION"
+              ],
+              "as": "IS_DISABLING_ACCOUNT_DETERMINATION"
+            },
+            {
+              "ref": [
+                "t_item",
+                "PRICE_ID"
+              ],
+              "as": "PRICE_ID"
+            },
+            {
+              "ref": [
+                "t_item",
+                "CONFIDENCE_LEVEL_ID"
+              ],
+              "as": "CONFIDENCE_LEVEL_ID"
+            },
+            {
+              "ref": [
+                "t_item",
+                "PRICE_SOURCE_ID"
+              ],
+              "as": "PRICE_SOURCE_ID"
+            },
+            {
+              "ref": [
+                "t_item",
+                "PRICE_SOURCE_TYPE_ID"
+              ],
+              "as": "PRICE_SOURCE_TYPE_ID"
+            },
+            {
+              "ref": [
+                "t_item",
+                "SURCHARGE"
+              ],
+              "as": "SURCHARGE"
+            },
+            {
+              "ref": [
+                "t_item",
+                "IS_DISABLING_PRICE_DETERMINATION"
+              ],
+              "as": "IS_DISABLING_PRICE_DETERMINATION"
+            },
+            {
+              "ref": [
+                "t_item",
+                "VENDOR_ID"
+              ],
+              "as": "VENDOR_ID"
+            },
+            {
+              "ref": [
+                "t_item",
+                "TARGET_COST"
+              ],
+              "as": "TARGET_COST"
+            },
+            {
+              "ref": [
+                "t_item",
+                "TARGET_COST_CALCULATED"
+              ],
+              "as": "TARGET_COST_CALCULATED"
+            },
+            {
+              "ref": [
+                "t_item",
+                "TARGET_COST_IS_MANUAL"
+              ],
+              "as": "TARGET_COST_IS_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item",
+                "TARGET_COST_CURRENCY_ID"
+              ],
+              "as": "TARGET_COST_CURRENCY_ID"
+            },
+            {
+              "ref": [
+                "t_item",
+                "CREATED_ON"
+              ],
+              "as": "CREATED_ON"
+            },
+            {
+              "ref": [
+                "t_item",
+                "CREATED_BY"
+              ],
+              "as": "CREATED_BY"
+            },
+            {
+              "ref": [
+                "t_item",
+                "LAST_MODIFIED_ON"
+              ],
+              "as": "LAST_MODIFIED_ON"
+            },
+            {
+              "ref": [
+                "t_item",
+                "LAST_MODIFIED_BY"
+              ],
+              "as": "LAST_MODIFIED_BY"
+            },
+            {
+              "ref": [
+                "t_item",
+                "PRICE_FOR_TOTAL_QUANTITY"
+              ],
+              "as": "PRICE_FOR_TOTAL_QUANTITY"
+            },
+            {
+              "ref": [
+                "t_item",
+                "PRICE_FOR_TOTAL_QUANTITY_FIXED_PORTION"
+              ],
+              "as": "PRICE_FOR_TOTAL_QUANTITY_FIXED_PORTION"
+            },
+            {
+              "ref": [
+                "t_item",
+                "PRICE_FOR_TOTAL_QUANTITY_VARIABLE_PORTION"
+              ],
+              "as": "PRICE_FOR_TOTAL_QUANTITY_VARIABLE_PORTION"
+            },
+            {
+              "ref": [
+                "t_item",
+                "PRICE_FOR_TOTAL_QUANTITY2"
+              ],
+              "as": "PRICE_FOR_TOTAL_QUANTITY2"
+            },
+            {
+              "ref": [
+                "t_item",
+                "PRICE_FOR_TOTAL_QUANTITY2_FIXED_PORTION"
+              ],
+              "as": "PRICE_FOR_TOTAL_QUANTITY2_FIXED_PORTION"
+            },
+            {
+              "ref": [
+                "t_item",
+                "PRICE_FOR_TOTAL_QUANTITY2_VARIABLE_PORTION"
+              ],
+              "as": "PRICE_FOR_TOTAL_QUANTITY2_VARIABLE_PORTION"
+            },
+            {
+              "ref": [
+                "t_item",
+                "PRICE_FOR_TOTAL_QUANTITY3"
+              ],
+              "as": "PRICE_FOR_TOTAL_QUANTITY3"
+            },
+            {
+              "ref": [
+                "t_item",
+                "PRICE_FOR_TOTAL_QUANTITY3_FIXED_PORTION"
+              ],
+              "as": "PRICE_FOR_TOTAL_QUANTITY3_FIXED_PORTION"
+            },
+            {
+              "ref": [
+                "t_item",
+                "PRICE_FOR_TOTAL_QUANTITY3_VARIABLE_PORTION"
+              ],
+              "as": "PRICE_FOR_TOTAL_QUANTITY3_VARIABLE_PORTION"
+            },
+            {
+              "ref": [
+                "t_item",
+                "OTHER_COST"
+              ],
+              "as": "OTHER_COST"
+            },
+            {
+              "ref": [
+                "t_item",
+                "OTHER_COST_FIXED_PORTION"
+              ],
+              "as": "OTHER_COST_FIXED_PORTION"
+            },
+            {
+              "ref": [
+                "t_item",
+                "OTHER_COST_VARIABLE_PORTION"
+              ],
+              "as": "OTHER_COST_VARIABLE_PORTION"
+            },
+            {
+              "ref": [
+                "t_item",
+                "TOTAL_COST"
+              ],
+              "as": "TOTAL_COST"
+            },
+            {
+              "ref": [
+                "t_item",
+                "TOTAL_COST_FIXED_PORTION"
+              ],
+              "as": "TOTAL_COST_FIXED_PORTION"
+            },
+            {
+              "ref": [
+                "t_item",
+                "TOTAL_COST_VARIABLE_PORTION"
+              ],
+              "as": "TOTAL_COST_VARIABLE_PORTION"
+            },
+            {
+              "ref": [
+                "t_item",
+                "TOTAL_COST_PER_UNIT"
+              ],
+              "as": "TOTAL_COST_PER_UNIT"
+            },
+            {
+              "ref": [
+                "t_item",
+                "TOTAL_COST_PER_UNIT_FIXED_PORTION"
+              ],
+              "as": "TOTAL_COST_PER_UNIT_FIXED_PORTION"
+            },
+            {
+              "ref": [
+                "t_item",
+                "TOTAL_COST_PER_UNIT_VARIABLE_PORTION"
+              ],
+              "as": "TOTAL_COST_PER_UNIT_VARIABLE_PORTION"
+            },
+            {
+              "ref": [
+                "t_item",
+                "TOTAL_COST2"
+              ],
+              "as": "TOTAL_COST2"
+            },
+            {
+              "ref": [
+                "t_item",
+                "TOTAL_COST2_FIXED_PORTION"
+              ],
+              "as": "TOTAL_COST2_FIXED_PORTION"
+            },
+            {
+              "ref": [
+                "t_item",
+                "TOTAL_COST2_VARIABLE_PORTION"
+              ],
+              "as": "TOTAL_COST2_VARIABLE_PORTION"
+            },
+            {
+              "ref": [
+                "t_item",
+                "TOTAL_COST2_PER_UNIT"
+              ],
+              "as": "TOTAL_COST2_PER_UNIT"
+            },
+            {
+              "ref": [
+                "t_item",
+                "TOTAL_COST2_PER_UNIT_FIXED_PORTION"
+              ],
+              "as": "TOTAL_COST2_PER_UNIT_FIXED_PORTION"
+            },
+            {
+              "ref": [
+                "t_item",
+                "TOTAL_COST2_PER_UNIT_VARIABLE_PORTION"
+              ],
+              "as": "TOTAL_COST2_PER_UNIT_VARIABLE_PORTION"
+            },
+            {
+              "ref": [
+                "t_item",
+                "TOTAL_COST3"
+              ],
+              "as": "TOTAL_COST3"
+            },
+            {
+              "ref": [
+                "t_item",
+                "TOTAL_COST3_FIXED_PORTION"
+              ],
+              "as": "TOTAL_COST3_FIXED_PORTION"
+            },
+            {
+              "ref": [
+                "t_item",
+                "TOTAL_COST3_VARIABLE_PORTION"
+              ],
+              "as": "TOTAL_COST3_VARIABLE_PORTION"
+            },
+            {
+              "ref": [
+                "t_item",
+                "TOTAL_COST3_PER_UNIT"
+              ],
+              "as": "TOTAL_COST3_PER_UNIT"
+            },
+            {
+              "ref": [
+                "t_item",
+                "TOTAL_COST3_PER_UNIT_FIXED_PORTION"
+              ],
+              "as": "TOTAL_COST3_PER_UNIT_FIXED_PORTION"
+            },
+            {
+              "ref": [
+                "t_item",
+                "TOTAL_COST3_PER_UNIT_VARIABLE_PORTION"
+              ],
+              "as": "TOTAL_COST3_PER_UNIT_VARIABLE_PORTION"
+            },
+            {
+              "ref": [
+                "t_item",
+                "BOM_COMPARE_KEY"
+              ],
+              "as": "BOM_COMPARE_KEY"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_ACTIVITY_COST_MANUAL"
+              ],
+              "as": "CUST_ACTIVITY_COST_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_ACTIVITY_COST_CALCULATED"
+              ],
+              "as": "CUST_ACTIVITY_COST_CALCULATED"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_ACTIVITY_COST_IS_MANUAL"
+              ],
+              "as": "CUST_ACTIVITY_COST_IS_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_ACTIVITY_COST_UNIT"
+              ],
+              "as": "CUST_ACTIVITY_COST_UNIT"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_COLLREQ_COST_MANUAL"
+              ],
+              "as": "CUST_COLLREQ_COST_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_COLLREQ_COST_CALCULATED"
+              ],
+              "as": "CUST_COLLREQ_COST_CALCULATED"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_COLLREQ_COST_IS_MANUAL"
+              ],
+              "as": "CUST_COLLREQ_COST_IS_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_COLLREQ_COST_UNIT"
+              ],
+              "as": "CUST_COLLREQ_COST_UNIT"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_COLLREQ_COST_RATE_MANUAL"
+              ],
+              "as": "CUST_COLLREQ_COST_RATE_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_COLLREQ_COST_RATE_CALCULATED"
+              ],
+              "as": "CUST_COLLREQ_COST_RATE_CALCULATED"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_COLLREQ_COST_RATE_IS_MANUAL"
+              ],
+              "as": "CUST_COLLREQ_COST_RATE_IS_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_COLLREQ_COST_RATE_UNIT"
+              ],
+              "as": "CUST_COLLREQ_COST_RATE_UNIT"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_MATERIAL_COST_MANUAL"
+              ],
+              "as": "CUST_MATERIAL_COST_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_MATERIAL_COST_CALCULATED"
+              ],
+              "as": "CUST_MATERIAL_COST_CALCULATED"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_MATERIAL_COST_IS_MANUAL"
+              ],
+              "as": "CUST_MATERIAL_COST_IS_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_MATERIAL_COST_UNIT"
+              ],
+              "as": "CUST_MATERIAL_COST_UNIT"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_ACTIVITY_COST_RATE_MANUAL"
+              ],
+              "as": "CUST_ACTIVITY_COST_RATE_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_ACTIVITY_COST_RATE_CALCULATED"
+              ],
+              "as": "CUST_ACTIVITY_COST_RATE_CALCULATED"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_ACTIVITY_COST_RATE_IS_MANUAL"
+              ],
+              "as": "CUST_ACTIVITY_COST_RATE_IS_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_ACTIVITY_COST_RATE_UNIT"
+              ],
+              "as": "CUST_ACTIVITY_COST_RATE_UNIT"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_MATERIAL_COST_RATE_MANUAL"
+              ],
+              "as": "CUST_MATERIAL_COST_RATE_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_MATERIAL_COST_RATE_CALCULATED"
+              ],
+              "as": "CUST_MATERIAL_COST_RATE_CALCULATED"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_MATERIAL_COST_RATE_IS_MANUAL"
+              ],
+              "as": "CUST_MATERIAL_COST_RATE_IS_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_MATERIAL_COST_RATE_UNIT"
+              ],
+              "as": "CUST_MATERIAL_COST_RATE_UNIT"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_CALCULATION_RESPONSIBLE_MANUAL"
+              ],
+              "as": "CUST_CALCULATION_RESPONSIBLE_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_CALCULATION_RESPONSIBLE_CALCULATED"
+              ],
+              "as": "CUST_CALCULATION_RESPONSIBLE_CALCULATED"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_CALCULATION_RESPONSIBLE_IS_MANUAL"
+              ],
+              "as": "CUST_CALCULATION_RESPONSIBLE_IS_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_CALCULATION_RESPONSIBLE_UNIT"
+              ],
+              "as": "CUST_CALCULATION_RESPONSIBLE_UNIT"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_CATALOGUE_ID_MANUAL"
+              ],
+              "as": "CUST_CATALOGUE_ID_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_CATALOGUE_ID_CALCULATED"
+              ],
+              "as": "CUST_CATALOGUE_ID_CALCULATED"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_CATALOGUE_ID_IS_MANUAL"
+              ],
+              "as": "CUST_CATALOGUE_ID_IS_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_CATALOGUE_ID_UNIT"
+              ],
+              "as": "CUST_CATALOGUE_ID_UNIT"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_CHIFFRE_MANUAL"
+              ],
+              "as": "CUST_CHIFFRE_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_CHIFFRE_CALCULATED"
+              ],
+              "as": "CUST_CHIFFRE_CALCULATED"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_CHIFFRE_IS_MANUAL"
+              ],
+              "as": "CUST_CHIFFRE_IS_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_CHIFFRE_UNIT"
+              ],
+              "as": "CUST_CHIFFRE_UNIT"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_ELEMENT_ID_MANUAL"
+              ],
+              "as": "CUST_ELEMENT_ID_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_ELEMENT_ID_CALCULATED"
+              ],
+              "as": "CUST_ELEMENT_ID_CALCULATED"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_ELEMENT_ID_IS_MANUAL"
+              ],
+              "as": "CUST_ELEMENT_ID_IS_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_ELEMENT_ID_UNIT"
+              ],
+              "as": "CUST_ELEMENT_ID_UNIT"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_BU_OWNER_MANUAL"
+              ],
+              "as": "CUST_BU_OWNER_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_BU_OWNER_CALCULATED"
+              ],
+              "as": "CUST_BU_OWNER_CALCULATED"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_BU_OWNER_IS_MANUAL"
+              ],
+              "as": "CUST_BU_OWNER_IS_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_BU_OWNER_UNIT"
+              ],
+              "as": "CUST_BU_OWNER_UNIT"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_INCOTERM_MANUAL"
+              ],
+              "as": "CUST_INCOTERM_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_INCOTERM_CALCULATED"
+              ],
+              "as": "CUST_INCOTERM_CALCULATED"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_INCOTERM_IS_MANUAL"
+              ],
+              "as": "CUST_INCOTERM_IS_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_INCOTERM_UNIT"
+              ],
+              "as": "CUST_INCOTERM_UNIT"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_INCOTERM_LOCATION_MANUAL"
+              ],
+              "as": "CUST_INCOTERM_LOCATION_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_INCOTERM_LOCATION_CALCULATED"
+              ],
+              "as": "CUST_INCOTERM_LOCATION_CALCULATED"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_INCOTERM_LOCATION_IS_MANUAL"
+              ],
+              "as": "CUST_INCOTERM_LOCATION_IS_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_INCOTERM_LOCATION_UNIT"
+              ],
+              "as": "CUST_INCOTERM_LOCATION_UNIT"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_SUPPLIER_MANUAL"
+              ],
+              "as": "CUST_SUPPLIER_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_SUPPLIER_CALCULATED"
+              ],
+              "as": "CUST_SUPPLIER_CALCULATED"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_SUPPLIER_IS_MANUAL"
+              ],
+              "as": "CUST_SUPPLIER_IS_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_SUPPLIER_UNIT"
+              ],
+              "as": "CUST_SUPPLIER_UNIT"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_SUPPLIER_TYPE_MANUAL"
+              ],
+              "as": "CUST_SUPPLIER_TYPE_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_SUPPLIER_TYPE_CALCULATED"
+              ],
+              "as": "CUST_SUPPLIER_TYPE_CALCULATED"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_SUPPLIER_TYPE_IS_MANUAL"
+              ],
+              "as": "CUST_SUPPLIER_TYPE_IS_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_SUPPLIER_TYPE_UNIT"
+              ],
+              "as": "CUST_SUPPLIER_TYPE_UNIT"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_REMARK_MANUAL"
+              ],
+              "as": "CUST_REMARK_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_REMARK_CALCULATED"
+              ],
+              "as": "CUST_REMARK_CALCULATED"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_REMARK_IS_MANUAL"
+              ],
+              "as": "CUST_REMARK_IS_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_REMARK_UNIT"
+              ],
+              "as": "CUST_REMARK_UNIT"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_OWNER_MANUAL"
+              ],
+              "as": "CUST_OWNER_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_OWNER_CALCULATED"
+              ],
+              "as": "CUST_OWNER_CALCULATED"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_OWNER_IS_MANUAL"
+              ],
+              "as": "CUST_OWNER_IS_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_OWNER_UNIT"
+              ],
+              "as": "CUST_OWNER_UNIT"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_BASIC_PRICE_MANUAL"
+              ],
+              "as": "CUST_BASIC_PRICE_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_BASIC_PRICE_CALCULATED"
+              ],
+              "as": "CUST_BASIC_PRICE_CALCULATED"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_BASIC_PRICE_IS_MANUAL"
+              ],
+              "as": "CUST_BASIC_PRICE_IS_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_BASIC_PRICE_UNIT"
+              ],
+              "as": "CUST_BASIC_PRICE_UNIT"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_IGNORE_CQR_MANUAL"
+              ],
+              "as": "CUST_IGNORE_CQR_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_IGNORE_CQR_CALCULATED"
+              ],
+              "as": "CUST_IGNORE_CQR_CALCULATED"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_IGNORE_CQR_IS_MANUAL"
+              ],
+              "as": "CUST_IGNORE_CQR_IS_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_IGNORE_CQR_UNIT"
+              ],
+              "as": "CUST_IGNORE_CQR_UNIT"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_FACTOR_MANUAL"
+              ],
+              "as": "CUST_FACTOR_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_FACTOR_CALCULATED"
+              ],
+              "as": "CUST_FACTOR_CALCULATED"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_FACTOR_IS_MANUAL"
+              ],
+              "as": "CUST_FACTOR_IS_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_FACTOR_UNIT"
+              ],
+              "as": "CUST_FACTOR_UNIT"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_FACTOR_RESULT_MANUAL"
+              ],
+              "as": "CUST_FACTOR_RESULT_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_FACTOR_RESULT_CALCULATED"
+              ],
+              "as": "CUST_FACTOR_RESULT_CALCULATED"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_FACTOR_RESULT_IS_MANUAL"
+              ],
+              "as": "CUST_FACTOR_RESULT_IS_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_FACTOR_RESULT_UNIT"
+              ],
+              "as": "CUST_FACTOR_RESULT_UNIT"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_ADJUSTMENT_MANUAL"
+              ],
+              "as": "CUST_ADJUSTMENT_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_ADJUSTMENT_CALCULATED"
+              ],
+              "as": "CUST_ADJUSTMENT_CALCULATED"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_ADJUSTMENT_IS_MANUAL"
+              ],
+              "as": "CUST_ADJUSTMENT_IS_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_ADJUSTMENT_UNIT"
+              ],
+              "as": "CUST_ADJUSTMENT_UNIT"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_ADJUSTMENT_RESULT_MANUAL"
+              ],
+              "as": "CUST_ADJUSTMENT_RESULT_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_ADJUSTMENT_RESULT_CALCULATED"
+              ],
+              "as": "CUST_ADJUSTMENT_RESULT_CALCULATED"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_ADJUSTMENT_RESULT_IS_MANUAL"
+              ],
+              "as": "CUST_ADJUSTMENT_RESULT_IS_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_ADJUSTMENT_RESULT_UNIT"
+              ],
+              "as": "CUST_ADJUSTMENT_RESULT_UNIT"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_BASIC_PRICE_PLAYFIELD_MANUAL"
+              ],
+              "as": "CUST_BASIC_PRICE_PLAYFIELD_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_BASIC_PRICE_PLAYFIELD_CALCULATED"
+              ],
+              "as": "CUST_BASIC_PRICE_PLAYFIELD_CALCULATED"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_BASIC_PRICE_PLAYFIELD_IS_MANUAL"
+              ],
+              "as": "CUST_BASIC_PRICE_PLAYFIELD_IS_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_BASIC_PRICE_PLAYFIELD_UNIT"
+              ],
+              "as": "CUST_BASIC_PRICE_PLAYFIELD_UNIT"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_SALES_PRICE_MANUAL"
+              ],
+              "as": "CUST_SALES_PRICE_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_SALES_PRICE_CALCULATED"
+              ],
+              "as": "CUST_SALES_PRICE_CALCULATED"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_SALES_PRICE_IS_MANUAL"
+              ],
+              "as": "CUST_SALES_PRICE_IS_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_SALES_PRICE_UNIT"
+              ],
+              "as": "CUST_SALES_PRICE_UNIT"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_USE_SALES_PRICE_MANUAL"
+              ],
+              "as": "CUST_USE_SALES_PRICE_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_USE_SALES_PRICE_CALCULATED"
+              ],
+              "as": "CUST_USE_SALES_PRICE_CALCULATED"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_USE_SALES_PRICE_IS_MANUAL"
+              ],
+              "as": "CUST_USE_SALES_PRICE_IS_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_USE_SALES_PRICE_UNIT"
+              ],
+              "as": "CUST_USE_SALES_PRICE_UNIT"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_BOM_LEVEL_MANUAL"
+              ],
+              "as": "CUST_BOM_LEVEL_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_BOM_LEVEL_CALCULATED"
+              ],
+              "as": "CUST_BOM_LEVEL_CALCULATED"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_BOM_LEVEL_IS_MANUAL"
+              ],
+              "as": "CUST_BOM_LEVEL_IS_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_BOM_LEVEL_UNIT"
+              ],
+              "as": "CUST_BOM_LEVEL_UNIT"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_MERGE_STATUS_MANUAL"
+              ],
+              "as": "CUST_MERGE_STATUS_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_MERGE_STATUS_CALCULATED"
+              ],
+              "as": "CUST_MERGE_STATUS_CALCULATED"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_MERGE_STATUS_IS_MANUAL"
+              ],
+              "as": "CUST_MERGE_STATUS_IS_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_MERGE_STATUS_UNIT"
+              ],
+              "as": "CUST_MERGE_STATUS_UNIT"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_MERGE_LOG_MANUAL"
+              ],
+              "as": "CUST_MERGE_LOG_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_MERGE_LOG_CALCULATED"
+              ],
+              "as": "CUST_MERGE_LOG_CALCULATED"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_MERGE_LOG_IS_MANUAL"
+              ],
+              "as": "CUST_MERGE_LOG_IS_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_MERGE_LOG_UNIT"
+              ],
+              "as": "CUST_MERGE_LOG_UNIT"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_NAVIGATOR_OPTION_NAME_DC_MANUAL"
+              ],
+              "as": "CUST_NAVIGATOR_OPTION_NAME_DC_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_NAVIGATOR_OPTION_NAME_DC_CALCULATED"
+              ],
+              "as": "CUST_NAVIGATOR_OPTION_NAME_DC_CALCULATED"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_NAVIGATOR_OPTION_NAME_DC_IS_MANUAL"
+              ],
+              "as": "CUST_NAVIGATOR_OPTION_NAME_DC_IS_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_NAVIGATOR_OPTION_NAME_DC_UNIT"
+              ],
+              "as": "CUST_NAVIGATOR_OPTION_NAME_DC_UNIT"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_PRODUCT_CATEGORY_DC_MANUAL"
+              ],
+              "as": "CUST_PRODUCT_CATEGORY_DC_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_PRODUCT_CATEGORY_DC_CALCULATED"
+              ],
+              "as": "CUST_PRODUCT_CATEGORY_DC_CALCULATED"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_PRODUCT_CATEGORY_DC_IS_MANUAL"
+              ],
+              "as": "CUST_PRODUCT_CATEGORY_DC_IS_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_PRODUCT_CATEGORY_DC_UNIT"
+              ],
+              "as": "CUST_PRODUCT_CATEGORY_DC_UNIT"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_PRODUCT_SERIES_DC_MANUAL"
+              ],
+              "as": "CUST_PRODUCT_SERIES_DC_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_PRODUCT_SERIES_DC_CALCULATED"
+              ],
+              "as": "CUST_PRODUCT_SERIES_DC_CALCULATED"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_PRODUCT_SERIES_DC_IS_MANUAL"
+              ],
+              "as": "CUST_PRODUCT_SERIES_DC_IS_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_PRODUCT_SERIES_DC_UNIT"
+              ],
+              "as": "CUST_PRODUCT_SERIES_DC_UNIT"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_NAVIGATOR_OPTION_NUMBER_DC_MANUAL"
+              ],
+              "as": "CUST_NAVIGATOR_OPTION_NUMBER_DC_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_NAVIGATOR_OPTION_NUMBER_DC_CALCULATED"
+              ],
+              "as": "CUST_NAVIGATOR_OPTION_NUMBER_DC_CALCULATED"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_NAVIGATOR_OPTION_NUMBER_DC_IS_MANUAL"
+              ],
+              "as": "CUST_NAVIGATOR_OPTION_NUMBER_DC_IS_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_NAVIGATOR_OPTION_NUMBER_DC_UNIT"
+              ],
+              "as": "CUST_NAVIGATOR_OPTION_NUMBER_DC_UNIT"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CMPR_INFNR_MANUAL"
+              ],
+              "as": "CMPR_INFNR_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CMPR_INFNR_UNIT"
+              ],
+              "as": "CMPR_INFNR_UNIT"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CMPR_EBELN_MANUAL"
+              ],
+              "as": "CMPR_EBELN_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CMPR_EBELN_UNIT"
+              ],
+              "as": "CMPR_EBELN_UNIT"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CMPR_BELNR_MANUAL"
+              ],
+              "as": "CMPR_BELNR_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CMPR_BELNR_UNIT"
+              ],
+              "as": "CMPR_BELNR_UNIT"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_NAVIGATOR_COST_UPDATED_MANUAL"
+              ],
+              "as": "CUST_NAVIGATOR_COST_UPDATED_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_NAVIGATOR_COST_UPDATED_CALCULATED"
+              ],
+              "as": "CUST_NAVIGATOR_COST_UPDATED_CALCULATED"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_NAVIGATOR_COST_UPDATED_IS_MANUAL"
+              ],
+              "as": "CUST_NAVIGATOR_COST_UPDATED_IS_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_NAVIGATOR_COST_UPDATED_UNIT"
+              ],
+              "as": "CUST_NAVIGATOR_COST_UPDATED_UNIT"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_NAVIGATOR_COST_MANUAL"
+              ],
+              "as": "CUST_NAVIGATOR_COST_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_NAVIGATOR_COST_CALCULATED"
+              ],
+              "as": "CUST_NAVIGATOR_COST_CALCULATED"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_NAVIGATOR_COST_IS_MANUAL"
+              ],
+              "as": "CUST_NAVIGATOR_COST_IS_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_NAVIGATOR_COST_UNIT"
+              ],
+              "as": "CUST_NAVIGATOR_COST_UNIT"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_IGNORE_MERGE_BOM_MANUAL"
+              ],
+              "as": "CUST_IGNORE_MERGE_BOM_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_IGNORE_MERGE_BOM_CALCULATED"
+              ],
+              "as": "CUST_IGNORE_MERGE_BOM_CALCULATED"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_IGNORE_MERGE_BOM_IS_MANUAL"
+              ],
+              "as": "CUST_IGNORE_MERGE_BOM_IS_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_IGNORE_MERGE_BOM_UNIT"
+              ],
+              "as": "CUST_IGNORE_MERGE_BOM_UNIT"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_USE_TOTAL_COST_MANUAL"
+              ],
+              "as": "CUST_USE_TOTAL_COST_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_USE_TOTAL_COST_CALCULATED"
+              ],
+              "as": "CUST_USE_TOTAL_COST_CALCULATED"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_USE_TOTAL_COST_IS_MANUAL"
+              ],
+              "as": "CUST_USE_TOTAL_COST_IS_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_USE_TOTAL_COST_UNIT"
+              ],
+              "as": "CUST_USE_TOTAL_COST_UNIT"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_IGNORE_QUANTITY_CHANGE_MANUAL"
+              ],
+              "as": "CUST_IGNORE_QUANTITY_CHANGE_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_IGNORE_QUANTITY_CHANGE_CALCULATED"
+              ],
+              "as": "CUST_IGNORE_QUANTITY_CHANGE_CALCULATED"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_IGNORE_QUANTITY_CHANGE_IS_MANUAL"
+              ],
+              "as": "CUST_IGNORE_QUANTITY_CHANGE_IS_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CUST_IGNORE_QUANTITY_CHANGE_UNIT"
+              ],
+              "as": "CUST_IGNORE_QUANTITY_CHANGE_UNIT"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CMPL_SOBSL_MANUAL"
+              ],
+              "as": "CMPL_SOBSL_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CMPL_SOBSL_UNIT"
+              ],
+              "as": "CMPL_SOBSL_UNIT"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CMPL_LVORM_MANUAL"
+              ],
+              "as": "CMPL_LVORM_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CMPL_LVORM_UNIT"
+              ],
+              "as": "CMPL_LVORM_UNIT"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CMPL_BESKZ_MANUAL"
+              ],
+              "as": "CMPL_BESKZ_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CMPL_BESKZ_UNIT"
+              ],
+              "as": "CMPL_BESKZ_UNIT"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CMPL_MMSTA_MANUAL"
+              ],
+              "as": "CMPL_MMSTA_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CMPL_MMSTA_UNIT"
+              ],
+              "as": "CMPL_MMSTA_UNIT"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CMPL_SBDKZ_MANUAL"
+              ],
+              "as": "CMPL_SBDKZ_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CMPL_SBDKZ_UNIT"
+              ],
+              "as": "CMPL_SBDKZ_UNIT"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CMPL_SOBSK_MANUAL"
+              ],
+              "as": "CMPL_SOBSK_MANUAL"
+            },
+            {
+              "ref": [
+                "t_item_join",
+                "CMPL_SOBSK_UNIT"
+              ],
+              "as": "CMPL_SOBSK_UNIT"
+            },
+            {
+              "ref": [
+                "calver",
+                "CALCULATION_ID"
+              ],
+              "as": "CALCULATION_ID"
+            },
+            {
+              "ref": [
+                "calver",
+                "CALCULATION_VERSION_NAME"
+              ],
+              "as": "CALCULATION_VERSION_NAME"
+            },
+            {
+              "ref": [
+                "calver",
+                "STATUS_ID"
+              ],
+              "as": "STATUS_ID"
+            },
+            {
+              "ref": [
+                "calver",
+                "CALCULATION_VERSION_TYPE"
+              ],
+              "as": "CALCULATION_VERSION_TYPE"
+            },
+            {
+              "ref": [
+                "calver",
+                "ROOT_ITEM_ID"
+              ],
+              "as": "ROOT_ITEM_ID"
+            },
+            {
+              "ref": [
+                "calver",
+                "CUSTOMER_ID"
+              ],
+              "as": "CUSTOMER_ID"
+            },
+            {
+              "ref": [
+                "calver",
+                "SALES_DOCUMENT"
+              ],
+              "as": "SALES_DOCUMENT"
+            },
+            {
+              "ref": [
+                "calver",
+                "SALES_PRICE"
+              ],
+              "as": "SALES_PRICE"
+            },
+            {
+              "ref": [
+                "calver",
+                "SALES_PRICE_CURRENCY_ID"
+              ],
+              "as": "SALES_PRICE_CURRENCY_ID"
+            },
+            {
+              "ref": [
+                "calver",
+                "REPORT_CURRENCY_ID"
+              ],
+              "as": "REPORT_CURRENCY_ID"
+            },
+            {
+              "ref": [
+                "calver",
+                "COSTING_SHEET_ID"
+              ],
+              "as": "COSTING_SHEET_ID"
+            },
+            {
+              "ref": [
+                "calver",
+                "COMPONENT_SPLIT_ID"
+              ],
+              "as": "COMPONENT_SPLIT_ID"
+            },
+            {
+              "ref": [
+                "calver",
+                "START_OF_PRODUCTION"
+              ],
+              "as": "START_OF_PRODUCTION"
+            },
+            {
+              "ref": [
+                "calver",
+                "END_OF_PRODUCTION"
+              ],
+              "as": "END_OF_PRODUCTION"
+            },
+            {
+              "ref": [
+                "calver",
+                "VALUATION_DATE"
+              ],
+              "as": "VALUATION_DATE"
+            },
+            {
+              "ref": [
+                "calver",
+                "MASTER_DATA_TIMESTAMP"
+              ],
+              "as": "MASTER_DATA_TIMESTAMP"
+            },
+            {
+              "ref": [
+                "calver",
+                "LIFECYCLE_PERIOD_FROM"
+              ],
+              "as": "LIFECYCLE_PERIOD_FROM"
+            },
+            {
+              "ref": [
+                "calver",
+                "BASE_VERSION_ID"
+              ],
+              "as": "BASE_VERSION_ID"
+            },
+            {
+              "ref": [
+                "calver",
+                "IS_FROZEN"
+              ],
+              "as": "IS_FROZEN"
+            },
+            {
+              "ref": [
+                "calver",
+                "VARIANT_ID"
+              ],
+              "as": "VARIANT_ID"
+            },
+            {
+              "ref": [
+                "calver",
+                "EXCHANGE_RATE_TYPE_ID"
+              ],
+              "as": "EXCHANGE_RATE_TYPE_ID"
+            },
+            {
+              "ref": [
+                "calver",
+                "MATERIAL_PRICE_STRATEGY_ID"
+              ],
+              "as": "MATERIAL_PRICE_STRATEGY_ID"
+            },
+            {
+              "ref": [
+                "calver",
+                "ACTIVITY_PRICE_STRATEGY_ID"
+              ],
+              "as": "ACTIVITY_PRICE_STRATEGY_ID"
+            },
+            {
+              "ref": [
+                "calver",
+                "SELECTED_TOTAL_COSTING_SHEET"
+              ],
+              "as": "SELECTED_TOTAL_COSTING_SHEET"
+            },
+            {
+              "ref": [
+                "calver",
+                "SELECTED_TOTAL_COMPONENT_SPLIT"
+              ],
+              "as": "SELECTED_TOTAL_COMPONENT_SPLIT"
+            },
+            {
+              "ref": [
+                "t_calculation",
+                "PROJECT_ID"
+              ],
+              "as": "PROJECT_ID"
+            },
+            {
+              "ref": [
+                "t_calculation",
+                "CALCULATION_NAME"
+              ],
+              "as": "CALCULATION_NAME"
+            },
+            {
+              "ref": [
+                "t_calculation",
+                "CURRENT_CALCULATION_VERSION_ID"
+              ],
+              "as": "CURRENT_CALCULATION_VERSION_ID"
+            }
+          ]
+        }
+      },
+      "elements": {
+        "ITEM_ID": {
+          "type": "cds.Integer"
+        },
+        "CALCULATION_VERSION_ID": {
+          "type": "cds.Integer"
+        },
+        "PARENT_ITEM_ID": {
+          "type": "cds.Integer"
+        },
+        "PREDECESSOR_ITEM_ID": {
+          "type": "cds.Integer"
+        },
+        "IS_ACTIVE": {
+          "type": "cds.Integer"
+        },
+        "HIGHLIGHT_GREEN": {
+          "type": "cds.Integer"
+        },
+        "HIGHLIGHT_ORANGE": {
+          "type": "cds.Integer"
+        },
+        "HIGHLIGHT_YELLOW": {
+          "type": "cds.Integer"
+        },
+        "ITEM_CATEGORY_ID": {
+          "type": "cds.Integer"
+        },
+        "ITEM_DESCRIPTION": {
+          "type": "cds.String",
+          "length": 250
+        },
+        "REFERENCED_CALCULATION_VERSION_ID": {
+          "type": "cds.Integer"
+        },
+        "COMMENT": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "ACCOUNT_ID": {
+          "type": "cds.String",
+          "length": 10
+        },
+        "DETERMINED_ACCOUNT_ID": {
+          "type": "cds.String",
+          "length": 10
+        },
+        "DOCUMENT_TYPE_ID": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "DOCUMENT_ID": {
+          "type": "cds.String",
+          "length": 40
+        },
+        "DOCUMENT_VERSION": {
+          "type": "cds.String",
+          "length": 2
+        },
+        "DOCUMENT_PART": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "DOCUMENT_STATUS_ID": {
+          "type": "cds.String",
+          "length": 2
+        },
+        "DESIGN_OFFICE_ID": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "MATERIAL_ID": {
+          "type": "cds.String",
+          "length": 40
+        },
+        "MATERIAL_TYPE_ID": {
+          "type": "cds.String",
+          "length": 4
+        },
+        "MATERIAL_GROUP_ID": {
+          "type": "cds.String",
+          "length": 9
+        },
+        "IS_PHANTOM_MATERIAL": {
+          "type": "cds.Integer"
+        },
+        "IS_CONFIGURABLE_MATERIAL": {
+          "type": "cds.Integer"
+        },
+        "MATERIAL_SOURCE": {
+          "type": "cds.Integer"
+        },
+        "OVERHEAD_GROUP_ID": {
+          "type": "cds.String",
+          "length": 10
+        },
+        "VALUATION_CLASS_ID": {
+          "type": "cds.String",
+          "length": 4
+        },
+        "PURCHASING_GROUP": {
+          "type": "cds.String",
+          "length": 20
+        },
+        "PURCHASING_DOCUMENT": {
+          "type": "cds.String",
+          "length": 10
+        },
+        "LOCAL_CONTENT": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "ACTIVITY_TYPE_ID": {
+          "type": "cds.String",
+          "length": 12
+        },
+        "PROCESS_ID": {
+          "type": "cds.String",
+          "length": 12
+        },
+        "LOT_SIZE": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "LOT_SIZE_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "LOT_SIZE_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "ENGINEERING_CHANGE_NUMBER_ID": {
+          "type": "cds.String",
+          "length": 250
+        },
+        "COMPANY_CODE_ID": {
+          "type": "cds.String",
+          "length": 4
+        },
+        "COST_CENTER_ID": {
+          "type": "cds.String",
+          "length": 10
+        },
+        "PLANT_ID": {
+          "type": "cds.String",
+          "length": 8
+        },
+        "WORK_CENTER_ID": {
+          "type": "cds.String",
+          "length": 15
+        },
+        "WORK_CENTER_CATEGORY": {
+          "type": "cds.String",
+          "length": 50
+        },
+        "EFFICIENCY": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "BUSINESS_AREA_ID": {
+          "type": "cds.String",
+          "length": 15
+        },
+        "PROFIT_CENTER_ID": {
+          "type": "cds.String",
+          "length": 10
+        },
+        "QUANTITY": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "QUANTITY_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "QUANTITY_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "QUANTITY_UOM_ID": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "TOTAL_QUANTITY": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "TOTAL_QUANTITY_UOM_ID": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "TOTAL_QUANTITY_DEPENDS_ON": {
+          "type": "cds.Integer"
+        },
+        "TOTAL_QUANTITY_OF_VARIANTS": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "IS_RELEVANT_TO_COSTING_IN_ERP": {
+          "type": "cds.Integer"
+        },
+        "BASE_QUANTITY": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "BASE_QUANTITY_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "BASE_QUANTITY_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "QUANTITY_PER_BASE_UNIT": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "QUANTITY_PER_BASE_UNIT_UOM_ID": {
+          "type": "cds.String"
+        },
+        "PRICE_FIXED_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "PRICE_FIXED_PORTION_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "PRICE_FIXED_PORTION_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "PRICE_VARIABLE_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "PRICE_VARIABLE_PORTION_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "PRICE_VARIABLE_PORTION_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "PRICE": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "TRANSACTION_CURRENCY_ID": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "PRICE_UNIT": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "PRICE_UNIT_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "PRICE_UNIT_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "PRICE_UNIT_UOM_ID": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "IS_PRICE_SPLIT_ACTIVE": {
+          "type": "cds.Integer"
+        },
+        "IS_DISABLING_ACCOUNT_DETERMINATION": {
+          "type": "cds.Integer"
+        },
+        "PRICE_ID": {
+          "type": "cds.String",
+          "length": 32
+        },
+        "CONFIDENCE_LEVEL_ID": {
+          "type": "cds.Integer"
+        },
+        "PRICE_SOURCE_ID": {
+          "type": "cds.String",
+          "length": 20
+        },
+        "PRICE_SOURCE_TYPE_ID": {
+          "type": "cds.Integer"
+        },
+        "SURCHARGE": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "IS_DISABLING_PRICE_DETERMINATION": {
+          "type": "cds.Integer"
+        },
+        "VENDOR_ID": {
+          "type": "cds.String",
+          "length": 10
+        },
+        "TARGET_COST": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "TARGET_COST_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "TARGET_COST_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "TARGET_COST_CURRENCY_ID": {
+          "type": "cds.String"
+        },
+        "CREATED_ON": {
+          "type": "cds.Timestamp"
+        },
+        "CREATED_BY": {
+          "type": "cds.String",
+          "length": 256
+        },
+        "LAST_MODIFIED_ON": {
+          "type": "cds.Timestamp"
+        },
+        "LAST_MODIFIED_BY": {
+          "type": "cds.String",
+          "length": 256
+        },
+        "PRICE_FOR_TOTAL_QUANTITY": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "PRICE_FOR_TOTAL_QUANTITY_FIXED_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "PRICE_FOR_TOTAL_QUANTITY_VARIABLE_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "PRICE_FOR_TOTAL_QUANTITY2": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "PRICE_FOR_TOTAL_QUANTITY2_FIXED_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "PRICE_FOR_TOTAL_QUANTITY2_VARIABLE_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "PRICE_FOR_TOTAL_QUANTITY3": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "PRICE_FOR_TOTAL_QUANTITY3_FIXED_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "PRICE_FOR_TOTAL_QUANTITY3_VARIABLE_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "OTHER_COST": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "OTHER_COST_FIXED_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "OTHER_COST_VARIABLE_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "TOTAL_COST": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "TOTAL_COST_FIXED_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "TOTAL_COST_VARIABLE_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "TOTAL_COST_PER_UNIT": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "TOTAL_COST_PER_UNIT_FIXED_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "TOTAL_COST_PER_UNIT_VARIABLE_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "TOTAL_COST2": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "TOTAL_COST2_FIXED_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "TOTAL_COST2_VARIABLE_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "TOTAL_COST2_PER_UNIT": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "TOTAL_COST2_PER_UNIT_FIXED_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "TOTAL_COST2_PER_UNIT_VARIABLE_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "TOTAL_COST3": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "TOTAL_COST3_FIXED_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "TOTAL_COST3_VARIABLE_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "TOTAL_COST3_PER_UNIT": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "TOTAL_COST3_PER_UNIT_FIXED_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "TOTAL_COST3_PER_UNIT_VARIABLE_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "BOM_COMPARE_KEY": {
+          "type": "cds.String",
+          "length": 256
+        },
+        "CUST_ACTIVITY_COST_MANUAL": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_ACTIVITY_COST_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_ACTIVITY_COST_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_ACTIVITY_COST_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_COLLREQ_COST_MANUAL": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_COLLREQ_COST_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_COLLREQ_COST_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_COLLREQ_COST_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_COLLREQ_COST_RATE_MANUAL": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_COLLREQ_COST_RATE_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_COLLREQ_COST_RATE_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_COLLREQ_COST_RATE_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_MATERIAL_COST_MANUAL": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_MATERIAL_COST_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_MATERIAL_COST_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_MATERIAL_COST_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_ACTIVITY_COST_RATE_MANUAL": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_ACTIVITY_COST_RATE_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_ACTIVITY_COST_RATE_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_ACTIVITY_COST_RATE_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_MATERIAL_COST_RATE_MANUAL": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_MATERIAL_COST_RATE_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_MATERIAL_COST_RATE_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_MATERIAL_COST_RATE_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_CALCULATION_RESPONSIBLE_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_CALCULATION_RESPONSIBLE_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_CALCULATION_RESPONSIBLE_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_CALCULATION_RESPONSIBLE_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_CATALOGUE_ID_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_CATALOGUE_ID_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_CATALOGUE_ID_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_CATALOGUE_ID_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_CHIFFRE_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_CHIFFRE_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_CHIFFRE_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_CHIFFRE_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_ELEMENT_ID_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_ELEMENT_ID_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_ELEMENT_ID_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_ELEMENT_ID_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_BU_OWNER_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_BU_OWNER_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_BU_OWNER_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_BU_OWNER_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_INCOTERM_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_INCOTERM_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_INCOTERM_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_INCOTERM_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_INCOTERM_LOCATION_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_INCOTERM_LOCATION_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_INCOTERM_LOCATION_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_INCOTERM_LOCATION_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_SUPPLIER_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_SUPPLIER_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_SUPPLIER_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_SUPPLIER_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_SUPPLIER_TYPE_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_SUPPLIER_TYPE_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_SUPPLIER_TYPE_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_SUPPLIER_TYPE_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_REMARK_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_REMARK_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_REMARK_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_REMARK_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_OWNER_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_OWNER_CALCULATED": {
+          "type": "cds.Integer"
+        },
+        "CUST_OWNER_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_OWNER_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_BASIC_PRICE_MANUAL": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_BASIC_PRICE_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_BASIC_PRICE_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_BASIC_PRICE_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_IGNORE_CQR_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_IGNORE_CQR_CALCULATED": {
+          "type": "cds.Integer"
+        },
+        "CUST_IGNORE_CQR_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_IGNORE_CQR_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_FACTOR_MANUAL": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_FACTOR_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_FACTOR_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_FACTOR_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_FACTOR_RESULT_MANUAL": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_FACTOR_RESULT_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_FACTOR_RESULT_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_FACTOR_RESULT_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_ADJUSTMENT_MANUAL": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_ADJUSTMENT_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_ADJUSTMENT_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_ADJUSTMENT_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_ADJUSTMENT_RESULT_MANUAL": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_ADJUSTMENT_RESULT_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_ADJUSTMENT_RESULT_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_ADJUSTMENT_RESULT_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_BASIC_PRICE_PLAYFIELD_MANUAL": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_BASIC_PRICE_PLAYFIELD_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_BASIC_PRICE_PLAYFIELD_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_BASIC_PRICE_PLAYFIELD_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_SALES_PRICE_MANUAL": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_SALES_PRICE_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_SALES_PRICE_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_SALES_PRICE_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_USE_SALES_PRICE_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_USE_SALES_PRICE_CALCULATED": {
+          "type": "cds.Integer"
+        },
+        "CUST_USE_SALES_PRICE_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_USE_SALES_PRICE_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_BOM_LEVEL_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_BOM_LEVEL_CALCULATED": {
+          "type": "cds.Integer"
+        },
+        "CUST_BOM_LEVEL_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_BOM_LEVEL_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_MERGE_STATUS_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_MERGE_STATUS_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_MERGE_STATUS_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_MERGE_STATUS_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_MERGE_LOG_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_MERGE_LOG_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_MERGE_LOG_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_MERGE_LOG_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_NAVIGATOR_OPTION_NAME_DC_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_NAVIGATOR_OPTION_NAME_DC_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_NAVIGATOR_OPTION_NAME_DC_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_NAVIGATOR_OPTION_NAME_DC_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_PRODUCT_CATEGORY_DC_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_PRODUCT_CATEGORY_DC_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_PRODUCT_CATEGORY_DC_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_PRODUCT_CATEGORY_DC_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_PRODUCT_SERIES_DC_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_PRODUCT_SERIES_DC_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_PRODUCT_SERIES_DC_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_PRODUCT_SERIES_DC_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_NAVIGATOR_OPTION_NUMBER_DC_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_NAVIGATOR_OPTION_NUMBER_DC_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_NAVIGATOR_OPTION_NUMBER_DC_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_NAVIGATOR_OPTION_NUMBER_DC_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CMPR_INFNR_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CMPR_INFNR_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CMPR_EBELN_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CMPR_EBELN_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CMPR_BELNR_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CMPR_BELNR_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_NAVIGATOR_COST_UPDATED_MANUAL": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_NAVIGATOR_COST_UPDATED_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_NAVIGATOR_COST_UPDATED_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_NAVIGATOR_COST_UPDATED_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_NAVIGATOR_COST_MANUAL": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_NAVIGATOR_COST_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_NAVIGATOR_COST_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_NAVIGATOR_COST_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_IGNORE_MERGE_BOM_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_IGNORE_MERGE_BOM_CALCULATED": {
+          "type": "cds.Integer"
+        },
+        "CUST_IGNORE_MERGE_BOM_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_IGNORE_MERGE_BOM_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_USE_TOTAL_COST_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_USE_TOTAL_COST_CALCULATED": {
+          "type": "cds.Integer"
+        },
+        "CUST_USE_TOTAL_COST_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_USE_TOTAL_COST_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_IGNORE_QUANTITY_CHANGE_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_IGNORE_QUANTITY_CHANGE_CALCULATED": {
+          "type": "cds.Integer"
+        },
+        "CUST_IGNORE_QUANTITY_CHANGE_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_IGNORE_QUANTITY_CHANGE_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CMPL_SOBSL_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CMPL_SOBSL_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CMPL_LVORM_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CMPL_LVORM_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CMPL_BESKZ_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CMPL_BESKZ_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CMPL_MMSTA_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CMPL_MMSTA_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CMPL_SBDKZ_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CMPL_SBDKZ_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CMPL_SOBSK_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CMPL_SOBSK_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CALCULATION_ID": {
+          "type": "cds.Integer"
+        },
+        "CALCULATION_VERSION_NAME": {
+          "type": "cds.String",
+          "length": 500
+        },
+        "STATUS_ID": {
+          "type": "cds.String",
+          "length": 20
+        },
+        "CALCULATION_VERSION_TYPE": {
+          "type": "cds.Integer"
+        },
+        "ROOT_ITEM_ID": {
+          "type": "cds.Integer"
+        },
+        "CUSTOMER_ID": {
+          "type": "cds.String",
+          "length": 10
+        },
+        "SALES_DOCUMENT": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "SALES_PRICE": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "SALES_PRICE_CURRENCY_ID": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "REPORT_CURRENCY_ID": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "COSTING_SHEET_ID": {
+          "type": "cds.String",
+          "length": 15
+        },
+        "COMPONENT_SPLIT_ID": {
+          "type": "cds.String",
+          "length": 35
+        },
+        "START_OF_PRODUCTION": {
+          "type": "cds.Date"
+        },
+        "END_OF_PRODUCTION": {
+          "type": "cds.Date"
+        },
+        "VALUATION_DATE": {
+          "type": "cds.Date"
+        },
+        "MASTER_DATA_TIMESTAMP": {
+          "type": "cds.Timestamp"
+        },
+        "LIFECYCLE_PERIOD_FROM": {
+          "type": "cds.Integer"
+        },
+        "BASE_VERSION_ID": {
+          "type": "cds.Integer"
+        },
+        "IS_FROZEN": {
+          "type": "cds.Integer"
+        },
+        "VARIANT_ID": {
+          "type": "cds.Integer"
+        },
+        "EXCHANGE_RATE_TYPE_ID": {
+          "type": "cds.String",
+          "length": 20
+        },
+        "MATERIAL_PRICE_STRATEGY_ID": {
+          "type": "cds.String",
+          "length": 20
+        },
+        "ACTIVITY_PRICE_STRATEGY_ID": {
+          "type": "cds.String",
+          "length": 20
+        },
+        "SELECTED_TOTAL_COSTING_SHEET": {
+          "type": "cds.String",
+          "length": 20
+        },
+        "SELECTED_TOTAL_COMPONENT_SPLIT": {
+          "type": "cds.String",
+          "length": 20
+        },
+        "PROJECT_ID": {
+          "type": "cds.String",
+          "length": 35
+        },
+        "CALCULATION_NAME": {
+          "type": "cds.String",
+          "length": 500
+        },
+        "CURRENT_CALCULATION_VERSION_ID": {
+          "type": "cds.Integer"
+        }
+      },
+      "$syntax": "view"
+    },
+    "ExcelExportSrv.item_exts": {
+      "kind": "entity",
+      "@Capabilities.DeleteRestirictions.Deletable": false,
+      "@Capabilities.InsertRestirictions.Insertable": false,
+      "@Capabilities.UpdateRestirictions.Updatable": false,
+      "query": {
+        "SELECT": {
+          "from": {
+            "ref": [
+              "T_ITEM_EXT"
+            ],
+            "as": "t_item_ext"
+          }
+        }
+      },
+      "elements": {
+        "CALCULATION_VERSION_ID": {
+          "key": true,
+          "type": "cds.Integer"
+        },
+        "ITEM_ID": {
+          "key": true,
+          "type": "cds.Integer"
+        },
+        "CUST_ACTIVITY_COST_MANUAL": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_ACTIVITY_COST_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_ACTIVITY_COST_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_ACTIVITY_COST_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_COLLREQ_COST_MANUAL": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_COLLREQ_COST_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_COLLREQ_COST_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_COLLREQ_COST_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_COLLREQ_COST_RATE_MANUAL": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_COLLREQ_COST_RATE_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_COLLREQ_COST_RATE_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_COLLREQ_COST_RATE_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_MATERIAL_COST_MANUAL": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_MATERIAL_COST_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_MATERIAL_COST_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_MATERIAL_COST_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_ACTIVITY_COST_RATE_MANUAL": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_ACTIVITY_COST_RATE_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_ACTIVITY_COST_RATE_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_ACTIVITY_COST_RATE_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_MATERIAL_COST_RATE_MANUAL": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_MATERIAL_COST_RATE_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_MATERIAL_COST_RATE_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_MATERIAL_COST_RATE_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_CALCULATION_RESPONSIBLE_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_CALCULATION_RESPONSIBLE_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_CALCULATION_RESPONSIBLE_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_CALCULATION_RESPONSIBLE_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_CATALOGUE_ID_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_CATALOGUE_ID_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_CATALOGUE_ID_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_CATALOGUE_ID_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_CHIFFRE_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_CHIFFRE_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_CHIFFRE_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_CHIFFRE_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_ELEMENT_ID_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_ELEMENT_ID_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_ELEMENT_ID_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_ELEMENT_ID_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_BU_OWNER_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_BU_OWNER_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_BU_OWNER_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_BU_OWNER_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_INCOTERM_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_INCOTERM_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_INCOTERM_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_INCOTERM_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_INCOTERM_LOCATION_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_INCOTERM_LOCATION_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_INCOTERM_LOCATION_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_INCOTERM_LOCATION_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_SUPPLIER_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_SUPPLIER_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_SUPPLIER_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_SUPPLIER_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_SUPPLIER_TYPE_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_SUPPLIER_TYPE_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_SUPPLIER_TYPE_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_SUPPLIER_TYPE_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_REMARK_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_REMARK_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_REMARK_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_REMARK_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_OWNER_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_OWNER_CALCULATED": {
+          "type": "cds.Integer"
+        },
+        "CUST_OWNER_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_OWNER_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_BASIC_PRICE_MANUAL": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_BASIC_PRICE_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_BASIC_PRICE_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_BASIC_PRICE_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_IGNORE_CQR_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_IGNORE_CQR_CALCULATED": {
+          "type": "cds.Integer"
+        },
+        "CUST_IGNORE_CQR_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_IGNORE_CQR_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_FACTOR_MANUAL": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_FACTOR_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_FACTOR_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_FACTOR_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_FACTOR_RESULT_MANUAL": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_FACTOR_RESULT_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_FACTOR_RESULT_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_FACTOR_RESULT_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_ADJUSTMENT_MANUAL": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_ADJUSTMENT_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_ADJUSTMENT_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_ADJUSTMENT_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_ADJUSTMENT_RESULT_MANUAL": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_ADJUSTMENT_RESULT_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_ADJUSTMENT_RESULT_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_ADJUSTMENT_RESULT_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_BASIC_PRICE_PLAYFIELD_MANUAL": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_BASIC_PRICE_PLAYFIELD_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_BASIC_PRICE_PLAYFIELD_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_BASIC_PRICE_PLAYFIELD_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_SALES_PRICE_MANUAL": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_SALES_PRICE_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_SALES_PRICE_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_SALES_PRICE_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_USE_SALES_PRICE_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_USE_SALES_PRICE_CALCULATED": {
+          "type": "cds.Integer"
+        },
+        "CUST_USE_SALES_PRICE_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_USE_SALES_PRICE_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_BOM_LEVEL_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_BOM_LEVEL_CALCULATED": {
+          "type": "cds.Integer"
+        },
+        "CUST_BOM_LEVEL_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_BOM_LEVEL_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_MERGE_STATUS_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_MERGE_STATUS_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_MERGE_STATUS_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_MERGE_STATUS_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_MERGE_LOG_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_MERGE_LOG_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_MERGE_LOG_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_MERGE_LOG_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_NAVIGATOR_OPTION_NAME_DC_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_NAVIGATOR_OPTION_NAME_DC_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_NAVIGATOR_OPTION_NAME_DC_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_NAVIGATOR_OPTION_NAME_DC_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_PRODUCT_CATEGORY_DC_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_PRODUCT_CATEGORY_DC_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_PRODUCT_CATEGORY_DC_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_PRODUCT_CATEGORY_DC_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_PRODUCT_SERIES_DC_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_PRODUCT_SERIES_DC_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_PRODUCT_SERIES_DC_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_PRODUCT_SERIES_DC_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_NAVIGATOR_OPTION_NUMBER_DC_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_NAVIGATOR_OPTION_NUMBER_DC_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_NAVIGATOR_OPTION_NUMBER_DC_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_NAVIGATOR_OPTION_NUMBER_DC_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CMPR_INFNR_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CMPR_INFNR_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CMPR_EBELN_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CMPR_EBELN_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CMPR_BELNR_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CMPR_BELNR_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_NAVIGATOR_COST_UPDATED_MANUAL": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_NAVIGATOR_COST_UPDATED_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_NAVIGATOR_COST_UPDATED_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_NAVIGATOR_COST_UPDATED_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_NAVIGATOR_COST_MANUAL": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_NAVIGATOR_COST_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_NAVIGATOR_COST_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_NAVIGATOR_COST_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_IGNORE_MERGE_BOM_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_IGNORE_MERGE_BOM_CALCULATED": {
+          "type": "cds.Integer"
+        },
+        "CUST_IGNORE_MERGE_BOM_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_IGNORE_MERGE_BOM_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_USE_TOTAL_COST_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_USE_TOTAL_COST_CALCULATED": {
+          "type": "cds.Integer"
+        },
+        "CUST_USE_TOTAL_COST_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_USE_TOTAL_COST_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_IGNORE_QUANTITY_CHANGE_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_IGNORE_QUANTITY_CHANGE_CALCULATED": {
+          "type": "cds.Integer"
+        },
+        "CUST_IGNORE_QUANTITY_CHANGE_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_IGNORE_QUANTITY_CHANGE_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CMPL_SOBSL_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CMPL_SOBSL_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CMPL_LVORM_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CMPL_LVORM_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CMPL_BESKZ_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CMPL_BESKZ_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CMPL_SBDKZ_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CMPL_SBDKZ_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CMPL_MMSTA_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CMPL_MMSTA_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CMPL_SOBSK_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CMPL_SOBSK_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CMAT_AESZN_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CMAT_AESZN_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CMPL_LOSGR_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CMPL_LOSGR_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CMPL_KAUSF_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CMPL_KAUSF_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CMPL_BSTFE_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CMPL_BSTFE_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        }
+      },
+      "$syntax": "entity"
+    },
+    "ExcelExportSrv.items": {
+      "kind": "entity",
+      "@Capabilities.DeleteRestirictions.Deletable": false,
+      "@Capabilities.InsertRestirictions.Insertable": false,
+      "@Capabilities.UpdateRestirictions.Updatable": false,
+      "query": {
+        "SELECT": {
+          "from": {
+            "ref": [
+              "T_ITEM"
+            ],
+            "as": "t_item"
+          }
+        }
+      },
+      "elements": {
+        "ITEM_ID": {
+          "key": true,
+          "type": "cds.Integer"
+        },
+        "CALCULATION_VERSION_ID": {
+          "key": true,
+          "type": "cds.Integer"
+        },
+        "PRICE_FOR_TOTAL_QUANTITY3": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "COMPANY_CODE_ID": {
+          "type": "cds.String",
+          "length": 4
+        },
+        "HIGHLIGHT_ORANGE": {
+          "type": "cds.Integer"
+        },
+        "PRICE_ID": {
+          "type": "cds.String",
+          "length": 32
+        },
+        "TOTAL_COST_PER_UNIT_VARIABLE_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "DOCUMENT_VERSION": {
+          "type": "cds.String",
+          "length": 2
+        },
+        "QUANTITY_UOM_ID": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CREATED_ON": {
+          "type": "cds.Timestamp"
+        },
+        "TOTAL_COST3_PER_UNIT_FIXED_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "VALUATION_CLASS_ID": {
+          "type": "cds.String",
+          "length": 4
+        },
+        "PRICE_FIXED_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "PRICE_FOR_TOTAL_QUANTITY3_FIXED_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "COST_CENTER_ID": {
+          "type": "cds.String",
+          "length": 10
+        },
+        "HIGHLIGHT_YELLOW": {
+          "type": "cds.Integer"
+        },
+        "CONFIDENCE_LEVEL_ID": {
+          "type": "cds.Integer"
+        },
+        "TOTAL_COST2": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "DOCUMENT_PART": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "TOTAL_QUANTITY": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CREATED_BY": {
+          "type": "cds.String",
+          "length": 256
+        },
+        "TOTAL_COST3_PER_UNIT_VARIABLE_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "PURCHASING_GROUP": {
+          "type": "cds.String",
+          "length": 20
+        },
+        "PRICE_FIXED_PORTION_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "PRICE_FOR_TOTAL_QUANTITY3_VARIABLE_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "PLANT_ID": {
+          "type": "cds.String",
+          "length": 8
+        },
+        "ITEM_CATEGORY_ID": {
+          "type": "cds.Integer"
+        },
+        "PRICE_SOURCE_ID": {
+          "type": "cds.String",
+          "length": 20
+        },
+        "TOTAL_COST2_FIXED_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "DOCUMENT_STATUS_ID": {
+          "type": "cds.String",
+          "length": 2
+        },
+        "TOTAL_QUANTITY_UOM_ID": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "LAST_MODIFIED_ON": {
+          "type": "cds.Timestamp"
+        },
+        "BOM_COMPARE_KEY": {
+          "type": "cds.String",
+          "length": 256
+        },
+        "PURCHASING_DOCUMENT": {
+          "type": "cds.String",
+          "length": 10
+        },
+        "PRICE_FIXED_PORTION_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "OTHER_COST": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "WORK_CENTER_ID": {
+          "type": "cds.String",
+          "length": 15
+        },
+        "ITEM_DESCRIPTION": {
+          "type": "cds.String",
+          "length": 250
+        },
+        "PRICE_SOURCE_TYPE_ID": {
+          "type": "cds.Integer"
+        },
+        "TOTAL_COST2_VARIABLE_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "DESIGN_OFFICE_ID": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "TOTAL_QUANTITY_DEPENDS_ON": {
+          "type": "cds.Integer"
+        },
+        "LAST_MODIFIED_BY": {
+          "type": "cds.String",
+          "length": 256
+        },
+        "LOCAL_CONTENT": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "PRICE_VARIABLE_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "OTHER_COST_FIXED_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "WORK_CENTER_CATEGORY": {
+          "type": "cds.String",
+          "length": 50
+        },
+        "REFERENCED_CALCULATION_VERSION_ID": {
+          "type": "cds.Integer"
+        },
+        "SURCHARGE": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "TOTAL_COST2_PER_UNIT": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "MATERIAL_ID": {
+          "type": "cds.String",
+          "length": 40
+        },
+        "TOTAL_QUANTITY_OF_VARIANTS": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "PRICE_FOR_TOTAL_QUANTITY": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "ACTIVITY_TYPE_ID": {
+          "type": "cds.String",
+          "length": 12
+        },
+        "PRICE_VARIABLE_PORTION_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "OTHER_COST_VARIABLE_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "EFFICIENCY": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "COMMENT": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "IS_DISABLING_PRICE_DETERMINATION": {
+          "type": "cds.Integer"
+        },
+        "TOTAL_COST2_PER_UNIT_FIXED_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "MATERIAL_TYPE_ID": {
+          "type": "cds.String",
+          "length": 4
+        },
+        "IS_RELEVANT_TO_COSTING_IN_ERP": {
+          "type": "cds.Integer"
+        },
+        "PRICE_FOR_TOTAL_QUANTITY_FIXED_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "PROCESS_ID": {
+          "type": "cds.String",
+          "length": 12
+        },
+        "PRICE_VARIABLE_PORTION_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "TOTAL_COST": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "BUSINESS_AREA_ID": {
+          "type": "cds.String",
+          "length": 15
+        },
+        "VENDOR_ID": {
+          "type": "cds.String",
+          "length": 10
+        },
+        "TOTAL_COST2_PER_UNIT_VARIABLE_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "MATERIAL_GROUP_ID": {
+          "type": "cds.String",
+          "length": 9
+        },
+        "BASE_QUANTITY": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "PRICE_FOR_TOTAL_QUANTITY_VARIABLE_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "LOT_SIZE": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "PRICE": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "PARENT_ITEM_ID": {
+          "type": "cds.Integer"
+        },
+        "PRICE_UNIT_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "TOTAL_COST_FIXED_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "ACCOUNT_ID": {
+          "type": "cds.String",
+          "length": 10
+        },
+        "PROFIT_CENTER_ID": {
+          "type": "cds.String",
+          "length": 10
+        },
+        "TARGET_COST": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "TOTAL_COST3": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "IS_PHANTOM_MATERIAL": {
+          "type": "cds.Integer"
+        },
+        "BASE_QUANTITY_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "PRICE_FOR_TOTAL_QUANTITY2": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "LOT_SIZE_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "TRANSACTION_CURRENCY_ID": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "PREDECESSOR_ITEM_ID": {
+          "type": "cds.Integer"
+        },
+        "PRICE_UNIT_UOM_ID": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "TOTAL_COST_VARIABLE_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "DETERMINED_ACCOUNT_ID": {
+          "type": "cds.String",
+          "length": 10
+        },
+        "QUANTITY": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "TARGET_COST_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "TOTAL_COST3_FIXED_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "IS_CONFIGURABLE_MATERIAL": {
+          "type": "cds.Integer"
+        },
+        "BASE_QUANTITY_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "PRICE_FOR_TOTAL_QUANTITY2_FIXED_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "LOT_SIZE_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "PRICE_UNIT": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "IS_ACTIVE": {
+          "type": "cds.Integer"
+        },
+        "IS_PRICE_SPLIT_ACTIVE": {
+          "type": "cds.Integer"
+        },
+        "TOTAL_COST_PER_UNIT": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "DOCUMENT_TYPE_ID": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "QUANTITY_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "TARGET_COST_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "TOTAL_COST3_VARIABLE_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "MATERIAL_SOURCE": {
+          "type": "cds.Integer"
+        },
+        "QUANTITY_PER_BASE_UNIT": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "PRICE_FOR_TOTAL_QUANTITY2_VARIABLE_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "ENGINEERING_CHANGE_NUMBER_ID": {
+          "type": "cds.String",
+          "length": 250
+        },
+        "PRICE_UNIT_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "HIGHLIGHT_GREEN": {
+          "type": "cds.Integer"
+        },
+        "IS_DISABLING_ACCOUNT_DETERMINATION": {
+          "type": "cds.Integer"
+        },
+        "TOTAL_COST_PER_UNIT_FIXED_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "DOCUMENT_ID": {
+          "type": "cds.String",
+          "length": 40
+        },
+        "QUANTITY_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "TARGET_COST_CURRENCY_ID": {
+          "type": "cds.String"
+        },
+        "TOTAL_COST3_PER_UNIT": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "OVERHEAD_GROUP_ID": {
+          "type": "cds.String",
+          "length": 10
+        },
+        "QUANTITY_PER_BASE_UNIT_UOM_ID": {
+          "type": "cds.String"
+        }
+      },
+      "$syntax": "entity"
+    },
+    "ExcelExportSrv.lay_join": {
+      "kind": "entity",
+      "query": {
+        "SELECT": {
+          "from": {
+            "join": "left",
+            "args": [
+              {
+                "ref": [
+                  "T_LAYOUT_COLUMN"
+                ],
+                "as": "t_col"
+              },
+              {
+                "ref": [
+                  "T_LAYOUT"
+                ],
+                "as": "t_lay"
+              }
+            ],
+            "on": [
+              {
+                "ref": [
+                  "t_lay",
+                  "LAYOUT_ID"
+                ]
+              },
+              "=",
+              {
+                "ref": [
+                  "t_col",
+                  "LAYOUT_ID"
+                ]
+              }
+            ]
+          },
+          "columns": [
+            {
+              "ref": [
+                "t_col",
+                "LAYOUT_ID"
+              ],
+              "as": "LAYOUT_ID"
+            },
+            {
+              "ref": [
+                "t_col",
+                "DISPLAY_ORDER"
+              ],
+              "as": "DISPLAY_ORDER"
+            },
+            {
+              "ref": [
+                "t_col",
+                "PATH"
+              ],
+              "as": "PATH"
+            },
+            {
+              "ref": [
+                "t_col",
+                "BUSINESS_OBJECT"
+              ],
+              "as": "BUSINESS_OBJECT"
+            },
+            {
+              "ref": [
+                "t_col",
+                "COLUMN_ID"
+              ],
+              "as": "COLUMN_ID"
+            },
+            {
+              "ref": [
+                "t_col",
+                "COSTING_SHEET_ROW_ID"
+              ],
+              "as": "COSTING_SHEET_ROW_ID"
+            },
+            {
+              "ref": [
+                "t_col",
+                "COST_COMPONENT_ID"
+              ],
+              "as": "COST_COMPONENT_ID"
+            },
+            {
+              "ref": [
+                "t_col",
+                "COLUMN_WIDTH"
+              ],
+              "as": "COLUMN_WIDTH"
+            },
+            {
+              "ref": [
+                "t_lay",
+                "LAYOUT_NAME"
+              ],
+              "as": "LAYOUT_NAME"
+            },
+            {
+              "ref": [
+                "t_lay",
+                "LAYOUT_TYPE"
+              ],
+              "as": "LAYOUT_TYPE"
+            },
+            {
+              "ref": [
+                "t_lay",
+                "IS_CORPORATE"
+              ],
+              "as": "IS_COPRPORATE"
+            }
+          ],
+          "where": [
+            {
+              "ref": [
+                "t_lay",
+                "IS_CORPORATE"
+              ]
+            },
+            "=",
+            {
+              "val": 1
+            }
+          ]
+        }
+      },
+      "elements": {
+        "LAYOUT_ID": {
+          "type": "cds.Integer"
+        },
+        "DISPLAY_ORDER": {
+          "type": "cds.Integer"
+        },
+        "PATH": {
+          "type": "cds.String",
+          "length": 127
+        },
+        "BUSINESS_OBJECT": {
+          "type": "cds.String",
+          "length": 127
+        },
+        "COLUMN_ID": {
+          "type": "cds.String",
+          "length": 127
+        },
+        "COSTING_SHEET_ROW_ID": {
+          "type": "cds.String",
+          "length": 5
+        },
+        "COST_COMPONENT_ID": {
+          "type": "cds.Integer"
+        },
+        "COLUMN_WIDTH": {
+          "type": "cds.Integer"
+        },
+        "LAYOUT_NAME": {
+          "type": "cds.String",
+          "length": 127
+        },
+        "LAYOUT_TYPE": {
+          "type": "cds.Integer"
+        },
+        "IS_COPRPORATE": {
+          "type": "cds.Integer"
+        }
+      },
+      "$syntax": "view"
+    },
+    "ExcelExportSrv.layout_columns": {
+      "kind": "entity",
+      "@Capabilities.DeleteRestirictions.Deletable": false,
+      "@Capabilities.InsertRestirictions.Insertable": false,
+      "@Capabilities.UpdateRestirictions.Updatable": false,
+      "query": {
+        "SELECT": {
+          "from": {
+            "ref": [
+              "T_LAYOUT_COLUMN"
+            ],
+            "as": "t_layout_column"
+          }
+        }
+      },
+      "elements": {
+        "LAYOUT_ID": {
+          "key": true,
+          "type": "cds.Integer"
+        },
+        "DISPLAY_ORDER": {
+          "type": "cds.Integer"
+        },
+        "PATH": {
+          "type": "cds.String",
+          "length": 127
+        },
+        "BUSINESS_OBJECT": {
+          "type": "cds.String",
+          "length": 127
+        },
+        "COLUMN_WIDTH": {
+          "type": "cds.Integer"
+        },
+        "COLUMN_ID": {
+          "type": "cds.String",
+          "length": 127
+        },
+        "COSTING_SHEET_ROW_ID": {
+          "type": "cds.String",
+          "length": 5
+        },
+        "COST_COMPONENT_ID": {
+          "type": "cds.Integer"
+        }
+      },
+      "$syntax": "entity"
+    },
+    "ExcelExportSrv.layouts": {
+      "kind": "entity",
+      "@Capabilities.DeleteRestirictions.Deletable": false,
+      "@Capabilities.InsertRestirictions.Insertable": false,
+      "@Capabilities.UpdateRestirictions.Updatable": false,
+      "query": {
+        "SELECT": {
+          "from": {
+            "ref": [
+              "T_LAYOUT"
+            ],
+            "as": "t_layout"
+          },
+          "where": [
+            {
+              "ref": [
+                "IS_CORPORATE"
+              ]
+            },
+            "=",
+            {
+              "val": 1
+            }
+          ]
+        }
+      },
+      "elements": {
+        "LAYOUT_ID": {
+          "key": true,
+          "type": "cds.Integer"
+        },
+        "LAYOUT_NAME": {
+          "type": "cds.String",
+          "length": 127
+        },
+        "IS_CORPORATE": {
+          "type": "cds.Integer"
+        },
+        "LAYOUT_TYPE": {
+          "type": "cds.Integer"
+        }
+      },
+      "$syntax": "entity"
+    },
+    "ExcelExportSrv.t_layout_view": {
+      "kind": "entity",
+      "query": {
+        "SELECT": {
+          "from": {
+            "ref": [
+              "T_LAYOUT"
+            ],
+            "as": "t_layout"
+          },
+          "where": [
+            {
+              "ref": [
+                "IS_CORPORATE"
+              ]
+            },
+            "=",
+            {
+              "val": 1
+            }
+          ]
+        }
+      },
+      "elements": {
+        "LAYOUT_ID": {
+          "key": true,
+          "type": "cds.Integer"
+        },
+        "LAYOUT_NAME": {
+          "type": "cds.String",
+          "length": 127
+        },
+        "IS_CORPORATE": {
+          "type": "cds.Integer"
+        },
+        "LAYOUT_TYPE": {
+          "type": "cds.Integer"
+        }
+      },
+      "$syntax": "view"
+    },
+    "T_CALCULATION": {
+      "kind": "entity",
+      "@cds.persistence.exists": true,
+      "elements": {
+        "CALCULATION_ID": {
+          "key": true,
+          "type": "cds.Integer"
+        },
+        "PROJECT_ID": {
+          "type": "cds.String",
+          "length": 35
+        },
+        "CALCULATION_NAME": {
+          "type": "cds.String",
+          "length": 500
+        },
+        "CURRENT_CALCULATION_VERSION_ID": {
+          "type": "cds.Integer"
+        },
+        "CREATED_ON": {
+          "type": "cds.Timestamp"
+        },
+        "CREATED_BY": {
+          "type": "cds.String",
+          "length": 256
+        },
+        "LAST_MODIFIED_ON": {
+          "type": "cds.Timestamp"
+        },
+        "LAST_MODIFIED_BY": {
+          "type": "cds.String",
+          "length": 256
+        }
+      }
+    },
+    "T_CALCULATION_VERSION": {
+      "kind": "entity",
+      "@cds.persistence.exists": true,
+      "elements": {
+        "CALCULATION_VERSION_ID": {
+          "key": true,
+          "type": "cds.Integer"
+        },
+        "CALCULATION_ID": {
+          "type": "cds.Integer"
+        },
+        "CALCULATION_VERSION_NAME": {
+          "type": "cds.String",
+          "length": 500
+        },
+        "STATUS_ID": {
+          "type": "cds.String",
+          "length": 20
+        },
+        "CALCULATION_VERSION_TYPE": {
+          "type": "cds.Integer"
+        },
+        "ROOT_ITEM_ID": {
+          "type": "cds.Integer"
+        },
+        "CUSTOMER_ID": {
+          "type": "cds.String",
+          "length": 10
+        },
+        "SALES_DOCUMENT": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "SALES_PRICE": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "SALES_PRICE_CURRENCY_ID": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "REPORT_CURRENCY_ID": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "COSTING_SHEET_ID": {
+          "type": "cds.String",
+          "length": 15
+        },
+        "COMPONENT_SPLIT_ID": {
+          "type": "cds.String",
+          "length": 35
+        },
+        "START_OF_PRODUCTION": {
+          "type": "cds.Date"
+        },
+        "END_OF_PRODUCTION": {
+          "type": "cds.Date"
+        },
+        "VALUATION_DATE": {
+          "type": "cds.Date"
+        },
+        "LAST_MODIFIED_ON": {
+          "type": "cds.Timestamp"
+        },
+        "LAST_MODIFIED_BY": {
+          "type": "cds.String",
+          "length": 256
+        },
+        "MASTER_DATA_TIMESTAMP": {
+          "type": "cds.Timestamp"
+        },
+        "LIFECYCLE_PERIOD_FROM": {
+          "type": "cds.Integer"
+        },
+        "BASE_VERSION_ID": {
+          "type": "cds.Integer"
+        },
+        "IS_FROZEN": {
+          "type": "cds.Integer"
+        },
+        "VARIANT_ID": {
+          "type": "cds.Integer"
+        },
+        "EXCHANGE_RATE_TYPE_ID": {
+          "type": "cds.String",
+          "length": 20
+        },
+        "MATERIAL_PRICE_STRATEGY_ID": {
+          "type": "cds.String",
+          "length": 20
+        },
+        "ACTIVITY_PRICE_STRATEGY_ID": {
+          "type": "cds.String",
+          "length": 20
+        },
+        "SELECTED_TOTAL_COSTING_SHEET": {
+          "type": "cds.String",
+          "length": 20
+        },
+        "SELECTED_TOTAL_COMPONENT_SPLIT": {
+          "type": "cds.String",
+          "length": 20
+        }
+      }
+    },
+    "T_ITEM": {
+      "kind": "entity",
+      "@cds.persistence.exists": true,
+      "elements": {
+        "ITEM_ID": {
+          "key": true,
+          "type": "cds.Integer"
+        },
+        "CALCULATION_VERSION_ID": {
+          "key": true,
+          "type": "cds.Integer"
+        },
+        "PRICE_FOR_TOTAL_QUANTITY3": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "COMPANY_CODE_ID": {
+          "type": "cds.String",
+          "length": 4
+        },
+        "HIGHLIGHT_ORANGE": {
+          "type": "cds.Integer"
+        },
+        "PRICE_ID": {
+          "type": "cds.String",
+          "length": 32
+        },
+        "TOTAL_COST_PER_UNIT_VARIABLE_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "DOCUMENT_VERSION": {
+          "type": "cds.String",
+          "length": 2
+        },
+        "QUANTITY_UOM_ID": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CREATED_ON": {
+          "type": "cds.Timestamp"
+        },
+        "TOTAL_COST3_PER_UNIT_FIXED_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "VALUATION_CLASS_ID": {
+          "type": "cds.String",
+          "length": 4
+        },
+        "PRICE_FIXED_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "PRICE_FOR_TOTAL_QUANTITY3_FIXED_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "COST_CENTER_ID": {
+          "type": "cds.String",
+          "length": 10
+        },
+        "HIGHLIGHT_YELLOW": {
+          "type": "cds.Integer"
+        },
+        "CONFIDENCE_LEVEL_ID": {
+          "type": "cds.Integer"
+        },
+        "TOTAL_COST2": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "DOCUMENT_PART": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "TOTAL_QUANTITY": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CREATED_BY": {
+          "type": "cds.String",
+          "length": 256
+        },
+        "TOTAL_COST3_PER_UNIT_VARIABLE_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "PURCHASING_GROUP": {
+          "type": "cds.String",
+          "length": 20
+        },
+        "PRICE_FIXED_PORTION_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "PRICE_FOR_TOTAL_QUANTITY3_VARIABLE_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "PLANT_ID": {
+          "type": "cds.String",
+          "length": 8
+        },
+        "ITEM_CATEGORY_ID": {
+          "type": "cds.Integer"
+        },
+        "PRICE_SOURCE_ID": {
+          "type": "cds.String",
+          "length": 20
+        },
+        "TOTAL_COST2_FIXED_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "DOCUMENT_STATUS_ID": {
+          "type": "cds.String",
+          "length": 2
+        },
+        "TOTAL_QUANTITY_UOM_ID": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "LAST_MODIFIED_ON": {
+          "type": "cds.Timestamp"
+        },
+        "BOM_COMPARE_KEY": {
+          "type": "cds.String",
+          "length": 256
+        },
+        "PURCHASING_DOCUMENT": {
+          "type": "cds.String",
+          "length": 10
+        },
+        "PRICE_FIXED_PORTION_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "OTHER_COST": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "WORK_CENTER_ID": {
+          "type": "cds.String",
+          "length": 15
+        },
+        "ITEM_DESCRIPTION": {
+          "type": "cds.String",
+          "length": 250
+        },
+        "PRICE_SOURCE_TYPE_ID": {
+          "type": "cds.Integer"
+        },
+        "TOTAL_COST2_VARIABLE_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "DESIGN_OFFICE_ID": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "TOTAL_QUANTITY_DEPENDS_ON": {
+          "type": "cds.Integer"
+        },
+        "LAST_MODIFIED_BY": {
+          "type": "cds.String",
+          "length": 256
+        },
+        "LOCAL_CONTENT": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "PRICE_VARIABLE_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "OTHER_COST_FIXED_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "WORK_CENTER_CATEGORY": {
+          "type": "cds.String",
+          "length": 50
+        },
+        "REFERENCED_CALCULATION_VERSION_ID": {
+          "type": "cds.Integer"
+        },
+        "SURCHARGE": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "TOTAL_COST2_PER_UNIT": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "MATERIAL_ID": {
+          "type": "cds.String",
+          "length": 40
+        },
+        "TOTAL_QUANTITY_OF_VARIANTS": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "PRICE_FOR_TOTAL_QUANTITY": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "ACTIVITY_TYPE_ID": {
+          "type": "cds.String",
+          "length": 12
+        },
+        "PRICE_VARIABLE_PORTION_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "OTHER_COST_VARIABLE_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "EFFICIENCY": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "COMMENT": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "IS_DISABLING_PRICE_DETERMINATION": {
+          "type": "cds.Integer"
+        },
+        "TOTAL_COST2_PER_UNIT_FIXED_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "MATERIAL_TYPE_ID": {
+          "type": "cds.String",
+          "length": 4
+        },
+        "IS_RELEVANT_TO_COSTING_IN_ERP": {
+          "type": "cds.Integer"
+        },
+        "PRICE_FOR_TOTAL_QUANTITY_FIXED_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "PROCESS_ID": {
+          "type": "cds.String",
+          "length": 12
+        },
+        "PRICE_VARIABLE_PORTION_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "TOTAL_COST": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "BUSINESS_AREA_ID": {
+          "type": "cds.String",
+          "length": 15
+        },
+        "VENDOR_ID": {
+          "type": "cds.String",
+          "length": 10
+        },
+        "TOTAL_COST2_PER_UNIT_VARIABLE_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "MATERIAL_GROUP_ID": {
+          "type": "cds.String",
+          "length": 9
+        },
+        "BASE_QUANTITY": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "PRICE_FOR_TOTAL_QUANTITY_VARIABLE_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "LOT_SIZE": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "PRICE": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "PARENT_ITEM_ID": {
+          "type": "cds.Integer"
+        },
+        "PRICE_UNIT_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "TOTAL_COST_FIXED_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "ACCOUNT_ID": {
+          "type": "cds.String",
+          "length": 10
+        },
+        "PROFIT_CENTER_ID": {
+          "type": "cds.String",
+          "length": 10
+        },
+        "TARGET_COST": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "TOTAL_COST3": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "IS_PHANTOM_MATERIAL": {
+          "type": "cds.Integer"
+        },
+        "BASE_QUANTITY_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "PRICE_FOR_TOTAL_QUANTITY2": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "LOT_SIZE_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "TRANSACTION_CURRENCY_ID": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "PREDECESSOR_ITEM_ID": {
+          "type": "cds.Integer"
+        },
+        "PRICE_UNIT_UOM_ID": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "TOTAL_COST_VARIABLE_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "DETERMINED_ACCOUNT_ID": {
+          "type": "cds.String",
+          "length": 10
+        },
+        "QUANTITY": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "TARGET_COST_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "TOTAL_COST3_FIXED_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "IS_CONFIGURABLE_MATERIAL": {
+          "type": "cds.Integer"
+        },
+        "BASE_QUANTITY_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "PRICE_FOR_TOTAL_QUANTITY2_FIXED_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "LOT_SIZE_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "PRICE_UNIT": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "IS_ACTIVE": {
+          "type": "cds.Integer"
+        },
+        "IS_PRICE_SPLIT_ACTIVE": {
+          "type": "cds.Integer"
+        },
+        "TOTAL_COST_PER_UNIT": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "DOCUMENT_TYPE_ID": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "QUANTITY_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "TARGET_COST_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "TOTAL_COST3_VARIABLE_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "MATERIAL_SOURCE": {
+          "type": "cds.Integer"
+        },
+        "QUANTITY_PER_BASE_UNIT": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "PRICE_FOR_TOTAL_QUANTITY2_VARIABLE_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "ENGINEERING_CHANGE_NUMBER_ID": {
+          "type": "cds.String",
+          "length": 250
+        },
+        "PRICE_UNIT_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "HIGHLIGHT_GREEN": {
+          "type": "cds.Integer"
+        },
+        "IS_DISABLING_ACCOUNT_DETERMINATION": {
+          "type": "cds.Integer"
+        },
+        "TOTAL_COST_PER_UNIT_FIXED_PORTION": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "DOCUMENT_ID": {
+          "type": "cds.String",
+          "length": 40
+        },
+        "QUANTITY_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "TARGET_COST_CURRENCY_ID": {
+          "type": "cds.String"
+        },
+        "TOTAL_COST3_PER_UNIT": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "OVERHEAD_GROUP_ID": {
+          "type": "cds.String",
+          "length": 10
+        },
+        "QUANTITY_PER_BASE_UNIT_UOM_ID": {
+          "type": "cds.String"
+        }
+      }
+    },
+    "T_ITEM_EXT": {
+      "kind": "entity",
+      "@cds.persistence.exists": true,
+      "elements": {
+        "CALCULATION_VERSION_ID": {
+          "key": true,
+          "type": "cds.Integer"
+        },
+        "ITEM_ID": {
+          "key": true,
+          "type": "cds.Integer"
+        },
+        "CUST_ACTIVITY_COST_MANUAL": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_ACTIVITY_COST_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_ACTIVITY_COST_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_ACTIVITY_COST_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_COLLREQ_COST_MANUAL": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_COLLREQ_COST_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_COLLREQ_COST_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_COLLREQ_COST_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_COLLREQ_COST_RATE_MANUAL": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_COLLREQ_COST_RATE_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_COLLREQ_COST_RATE_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_COLLREQ_COST_RATE_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_MATERIAL_COST_MANUAL": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_MATERIAL_COST_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_MATERIAL_COST_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_MATERIAL_COST_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_ACTIVITY_COST_RATE_MANUAL": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_ACTIVITY_COST_RATE_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_ACTIVITY_COST_RATE_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_ACTIVITY_COST_RATE_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_MATERIAL_COST_RATE_MANUAL": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_MATERIAL_COST_RATE_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_MATERIAL_COST_RATE_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_MATERIAL_COST_RATE_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_CALCULATION_RESPONSIBLE_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_CALCULATION_RESPONSIBLE_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_CALCULATION_RESPONSIBLE_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_CALCULATION_RESPONSIBLE_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_CATALOGUE_ID_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_CATALOGUE_ID_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_CATALOGUE_ID_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_CATALOGUE_ID_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_CHIFFRE_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_CHIFFRE_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_CHIFFRE_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_CHIFFRE_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_ELEMENT_ID_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_ELEMENT_ID_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_ELEMENT_ID_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_ELEMENT_ID_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_BU_OWNER_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_BU_OWNER_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_BU_OWNER_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_BU_OWNER_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_INCOTERM_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_INCOTERM_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_INCOTERM_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_INCOTERM_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_INCOTERM_LOCATION_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_INCOTERM_LOCATION_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_INCOTERM_LOCATION_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_INCOTERM_LOCATION_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_SUPPLIER_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_SUPPLIER_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_SUPPLIER_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_SUPPLIER_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_SUPPLIER_TYPE_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_SUPPLIER_TYPE_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_SUPPLIER_TYPE_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_SUPPLIER_TYPE_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_REMARK_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_REMARK_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_REMARK_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_REMARK_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_OWNER_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_OWNER_CALCULATED": {
+          "type": "cds.Integer"
+        },
+        "CUST_OWNER_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_OWNER_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_BASIC_PRICE_MANUAL": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_BASIC_PRICE_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_BASIC_PRICE_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_BASIC_PRICE_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_IGNORE_CQR_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_IGNORE_CQR_CALCULATED": {
+          "type": "cds.Integer"
+        },
+        "CUST_IGNORE_CQR_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_IGNORE_CQR_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_FACTOR_MANUAL": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_FACTOR_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_FACTOR_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_FACTOR_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_FACTOR_RESULT_MANUAL": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_FACTOR_RESULT_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_FACTOR_RESULT_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_FACTOR_RESULT_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_ADJUSTMENT_MANUAL": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_ADJUSTMENT_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_ADJUSTMENT_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_ADJUSTMENT_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_ADJUSTMENT_RESULT_MANUAL": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_ADJUSTMENT_RESULT_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_ADJUSTMENT_RESULT_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_ADJUSTMENT_RESULT_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_BASIC_PRICE_PLAYFIELD_MANUAL": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_BASIC_PRICE_PLAYFIELD_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_BASIC_PRICE_PLAYFIELD_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_BASIC_PRICE_PLAYFIELD_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_SALES_PRICE_MANUAL": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_SALES_PRICE_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_SALES_PRICE_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_SALES_PRICE_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_USE_SALES_PRICE_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_USE_SALES_PRICE_CALCULATED": {
+          "type": "cds.Integer"
+        },
+        "CUST_USE_SALES_PRICE_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_USE_SALES_PRICE_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_BOM_LEVEL_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_BOM_LEVEL_CALCULATED": {
+          "type": "cds.Integer"
+        },
+        "CUST_BOM_LEVEL_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_BOM_LEVEL_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_MERGE_STATUS_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_MERGE_STATUS_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_MERGE_STATUS_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_MERGE_STATUS_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_MERGE_LOG_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_MERGE_LOG_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_MERGE_LOG_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_MERGE_LOG_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_NAVIGATOR_OPTION_NAME_DC_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_NAVIGATOR_OPTION_NAME_DC_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_NAVIGATOR_OPTION_NAME_DC_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_NAVIGATOR_OPTION_NAME_DC_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_PRODUCT_CATEGORY_DC_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_PRODUCT_CATEGORY_DC_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_PRODUCT_CATEGORY_DC_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_PRODUCT_CATEGORY_DC_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_PRODUCT_SERIES_DC_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_PRODUCT_SERIES_DC_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_PRODUCT_SERIES_DC_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_PRODUCT_SERIES_DC_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_NAVIGATOR_OPTION_NUMBER_DC_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_NAVIGATOR_OPTION_NUMBER_DC_CALCULATED": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CUST_NAVIGATOR_OPTION_NUMBER_DC_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_NAVIGATOR_OPTION_NUMBER_DC_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CMPR_INFNR_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CMPR_INFNR_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CMPR_EBELN_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CMPR_EBELN_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CMPR_BELNR_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CMPR_BELNR_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_NAVIGATOR_COST_UPDATED_MANUAL": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_NAVIGATOR_COST_UPDATED_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_NAVIGATOR_COST_UPDATED_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_NAVIGATOR_COST_UPDATED_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_NAVIGATOR_COST_MANUAL": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_NAVIGATOR_COST_CALCULATED": {
+          "type": "cds.Decimal",
+          "precision": 28,
+          "scale": 7
+        },
+        "CUST_NAVIGATOR_COST_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_NAVIGATOR_COST_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_IGNORE_MERGE_BOM_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_IGNORE_MERGE_BOM_CALCULATED": {
+          "type": "cds.Integer"
+        },
+        "CUST_IGNORE_MERGE_BOM_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_IGNORE_MERGE_BOM_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_USE_TOTAL_COST_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_USE_TOTAL_COST_CALCULATED": {
+          "type": "cds.Integer"
+        },
+        "CUST_USE_TOTAL_COST_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_USE_TOTAL_COST_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CUST_IGNORE_QUANTITY_CHANGE_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_IGNORE_QUANTITY_CHANGE_CALCULATED": {
+          "type": "cds.Integer"
+        },
+        "CUST_IGNORE_QUANTITY_CHANGE_IS_MANUAL": {
+          "type": "cds.Integer"
+        },
+        "CUST_IGNORE_QUANTITY_CHANGE_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CMPL_SOBSL_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CMPL_SOBSL_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CMPL_LVORM_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CMPL_LVORM_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CMPL_BESKZ_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CMPL_BESKZ_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CMPL_SBDKZ_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CMPL_SBDKZ_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CMPL_MMSTA_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CMPL_MMSTA_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CMPL_SOBSK_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CMPL_SOBSK_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CMAT_AESZN_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CMAT_AESZN_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CMPL_LOSGR_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CMPL_LOSGR_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CMPL_KAUSF_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CMPL_KAUSF_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "CMPL_BSTFE_MANUAL": {
+          "type": "cds.String",
+          "length": 5000
+        },
+        "CMPL_BSTFE_UNIT": {
+          "type": "cds.String",
+          "length": 3
+        }
+      }
+    },
+    "T_LAYOUT": {
+      "kind": "entity",
+      "@cds.persistence.exists": true,
+      "elements": {
+        "LAYOUT_ID": {
+          "key": true,
+          "type": "cds.Integer"
+        },
+        "LAYOUT_NAME": {
+          "type": "cds.String",
+          "length": 127
+        },
+        "IS_CORPORATE": {
+          "type": "cds.Integer"
+        },
+        "LAYOUT_TYPE": {
+          "type": "cds.Integer"
+        }
+      }
+    },
+    "T_LAYOUT_COLUMN": {
+      "kind": "entity",
+      "@cds.persistence.exists": true,
+      "elements": {
+        "LAYOUT_ID": {
+          "key": true,
+          "type": "cds.Integer"
+        },
+        "DISPLAY_ORDER": {
+          "type": "cds.Integer"
+        },
+        "PATH": {
+          "type": "cds.String",
+          "length": 127
+        },
+        "BUSINESS_OBJECT": {
+          "type": "cds.String",
+          "length": 127
+        },
+        "COLUMN_WIDTH": {
+          "type": "cds.Integer"
+        },
+        "COLUMN_ID": {
+          "type": "cds.String",
+          "length": 127
+        },
+        "COSTING_SHEET_ROW_ID": {
+          "type": "cds.String",
+          "length": 5
+        },
+        "COST_COMPONENT_ID": {
+          "type": "cds.Integer"
+        }
+      }
+    }
+  },
+  "meta": {
+    "flavor": "inferred",
+    "creator": "CDS Compiler v1.45.0"
+  },
+  "$version": "1.0"
+}

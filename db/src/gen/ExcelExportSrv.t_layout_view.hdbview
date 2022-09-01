@@ -1,0 +1,7 @@
+VIEW ExcelExportSrv_t_layout_view AS SELECT
+  t_layout_0.LAYOUT_ID,
+  t_layout_0.LAYOUT_NAME,
+  t_layout_0.IS_CORPORATE,
+  t_layout_0.LAYOUT_TYPE
+FROM T_LAYOUT AS t_layout_0
+WHERE t_layout_0.IS_CORPORATE = 1

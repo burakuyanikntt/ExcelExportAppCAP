@@ -1,0 +1,52 @@
+ID: EEACAP
+_schema-version: "2.1"
+version: 0.0.1
+modules:
+  - name: EEACAP-db
+    type: hdb
+    path: db
+    parameters:
+      memory: 256M
+      disk-quota: 512M
+    requires:
+      - name: EEACAP-db-hdi-container
+        properties:
+          TARGET_CONTAINER: ~{hdi-container-name}
+
+  
+      - name: cross-container-service-1
+        group: SERVICE_REPLACEMENTS
+
+        properties:
+          key: ServiceName_1
+          service: ~{the-service-name}
+                            
+
+
+  - name: EEACAP-srv
+    type: nodejs
+    path: srv
+    parameters:
+      memory: 512M
+      disk-quota: 512M
+    provides:
+      - name: srv_api
+        properties:
+          url: ${default-url}
+    requires:
+      - name: EEACAP-db-hdi-container
+resources:
+  - name: EEACAP-db-hdi-container
+    type: com.sap.xs.hdi-container
+    properties:
+      hdi-container-name: ${service-name}
+  - name : ServiceName_1
+    properties : 
+       plc-standart-grantor-service : '${service-name}'
+  - name: cross-container-service-1
+    parameters:
+       service-name: xsac-plc-db-service
+    properties:
+       the-service-name: ${service-name}
+    type: org.cloudfoundry.existing-service
+
